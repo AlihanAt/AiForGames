@@ -8,10 +8,10 @@ public class ScoreBoard {
     private Player playerD;
 
     private ScoreBoard(){
-        this.playerA = new Player();
-        this.playerB = new Player();
-        this.playerC = new Player();
-        this.playerD = new Player();
+//        this.playerA = new Player();
+//        this.playerB = new Player();
+//        this.playerC = new Player();
+//        this.playerD = new Player();
     }
 
     public Player getPlayerA(){
