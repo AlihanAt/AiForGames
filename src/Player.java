@@ -2,7 +2,7 @@ public class Player {
 
     private final int number;
 
-    private int points;
+    private int points = 0;
 
     private boolean isMe;
 

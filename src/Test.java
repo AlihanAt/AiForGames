@@ -1,3 +1,4 @@
+import com.sun.java.swing.plaf.windows.WindowsDesktopIconUI;
 import lenz.htw.gaap.Move;
 import lenz.htw.gaap.Server;
 import lenz.htw.gaap.net.NetworkClient;
@@ -5,10 +6,19 @@ import lenz.htw.gaap.net.NetworkClient;
 import javax.imageio.ImageIO;
 import  java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class Test {
 
     public static void main(String[] args) throws IOException {
+        List<Integer> playersList = Arrays.asList(1, 2, 3, 4);
+
+        int index = playersList.indexOf(1);
+        if(index == 0){
+            index = playersList.size();
+        }
+            System.out.println(playersList.get(index-1));
 
     }
 

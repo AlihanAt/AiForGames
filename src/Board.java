@@ -1,3 +1,6 @@
+import lenz.htw.gaap.Move;
+
+import java.util.Arrays;
 import java.util.List;
 
 public class Board {
@@ -16,7 +19,14 @@ public class Board {
                 new Player(4, false),
         };
 
+        for (int x = 0; x < board.length; x++){
+            for (int y = 0; y < board[x].length; y++){
+                board[x][y] = new BoardField();
+            }
+        }
+
         boardFieldList = ListExtension.twoDArrayToList(board);
+
     }
 
     public Player getPlayerAndRegister(int playerNo){
@@ -24,7 +34,7 @@ public class Board {
         return players[playerNo-1];
     }
 
-    public boolean addStone(int x, int y, int playerNo) {
+    private boolean addStone(int x, int y, int playerNo) {
         return board[x][y].createStone(players[playerNo - 1]);
     }
 
@@ -54,12 +64,6 @@ public class Board {
             return 0;
     }
 
-    private void clearPushState(){
-        for (BoardField field : boardFieldList) {
-            field.clearPushState();
-        }
-    }
-
     private void pushStone(int currentPosX, int currentPosY, int pushDirX, int pushDirY) {
 
         int nextPosX = currentPosX + pushDirX;
@@ -81,8 +85,64 @@ public class Board {
         board[currentPosX][currentPosY].pushStone(board[nextPosX][nextPosY]);
     }
 
+    private void clearPushState(){
+        for (BoardField field : boardFieldList) {
+            field.clearPushState();
+        }
+    }
+
     private boolean isWithinBounds(int currentPosX, int currentPosY) {
         return currentPosX >= board.length || currentPosY >= board.length || currentPosX < 0 || currentPosY < 0;
     }
 
+    public void addMove(int x, int y) {
+        int playerNo = getPlayerFromMove(x, y);
+
+        if(playerNo == -1)
+            return;
+
+        updateStonePositionsFrom(playerNo);
+
+        addStone(x, y, playerNo);
+    }
+
+    public int getPlayerFromMove(int x, int y){
+
+        if(y == 0){
+            //p0
+            return 1;
+        }
+        else if (x == 0){
+            //p1
+            return 2;
+        }
+        else if (y == 7){
+            //p2
+            return 3;
+        }
+        else if (x == 7){
+            //p3
+            return 4;
+        }
+        System.out.println("invalid move" +x +"," +y);
+        return -1;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+
+        for (int x = 0; x < board.length; x++){
+            for (int y = 0; y < board[x].length; y++){
+
+                str.append(board[x][y]);
+                if(y+1 != board[x].length)
+                    str.append(",");
+            }
+            if(x+1 != board.length)
+                str.append("\n");
+        }
+
+        return str.toString();
+    }
 }

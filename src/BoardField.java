@@ -10,7 +10,7 @@ public class BoardField {
     }
 
     public boolean createStone(Player player){
-        if(stone != null){
+        if(stone == null){
             stone = new Stone(player);
             return true;
         }
@@ -40,7 +40,8 @@ public class BoardField {
     }
 
     public void clearPushState() {
-        stone.resetPush();
+        if(stone != null)
+            stone.resetPush();
     }
 
     public boolean isSamePlayerAs(BoardField next) {
@@ -49,6 +50,14 @@ public class BoardField {
 
     public void addPoint() {
         this.getStone().getPlayer().addPoints(1);
+    }
+
+    @Override
+    public String toString() {
+        if(stone == null || stone.getPlayer() == null)
+            return "-";
+
+        return "" + stone.getPlayer().getNumber();
     }
 
     //TODO static vllt weg, mal schauen
