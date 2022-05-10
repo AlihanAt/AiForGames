@@ -172,4 +172,72 @@ class BoardTest {
 
     }
 
+    @Test
+    public void testSkipping(){
+        Board board = new Board();
+        board.addMove(6,0);
+        board.addMove(0,6);
+        board.addMove(6,7);
+        board.addMove(7,6);
+        String expected =
+                "-,-,-,-,-,-,2,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "1,-,-,-,-,-,-,3\n" +
+                "-,-,-,-,-,-,4,-";
+        assertEquals(expected, board.toString());
+
+        board.updateSkippedPlayers(1, 4);
+        expected =
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,2,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "1,-,-,-,-,-,3,-\n" +
+                "-,-,-,-,-,-,4,-";
+        assertEquals(expected, board.toString());
+
+        board.updateSkippedPlayers(2, 1);
+        expected =
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,2,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "1,-,-,-,-,3,4,-\n" +
+                "-,-,-,-,-,-,-,-";
+        assertEquals(expected, board.toString());
+
+        board.updateSkippedPlayers(3, 2);
+        expected =
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,2,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,4,-\n" +
+                "-,1,-,-,-,3,-,-\n" +
+                "-,-,-,-,-,-,-,-";
+        assertEquals(expected, board.toString());
+
+        board.updateSkippedPlayers(4, 3);
+        expected =
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,2,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,4,-\n" +
+                "-,-,1,-,-,3,-,-\n" +
+                "-,-,-,-,-,-,-,-";
+        assertEquals(expected, board.toString());
+
+    }
+
 }

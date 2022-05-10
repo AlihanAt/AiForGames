@@ -30,7 +30,11 @@ public class Client {
             while (true) {
 
                 if ((move = client.receiveMove()) != null) {
-                    lastPlayer = board.getPlayerFromMove(move.x, move.y);
+                    int currentPlayer = board.getPlayerFromMove(move.x, move.y);
+                    //TODO skipplayers updaten aus der sicht von anderen spielern
+                    //if (currentPlayer == myNumber)
+                        // board.updateSkippedPlayers(lastPlayer, currentPlayer);
+                    lastPlayer = currentPlayer;
                     board.addMove(move.x, move.y);
                 }
                 //my turn
@@ -39,10 +43,7 @@ public class Client {
                         client.sendMove(generateRandomMove(myNumber));
                         init = true;
                     } else {
-                        //gucken ob spieler geskippt wurden, wenn ja dann deren steine updaten
-                        if ((lastPlayer + 1) % 4 != myNumber)
-                            for (int i = lastPlayer + 1; i < (myNumber % 4) + 4; i++)
-                                board.updateStonePositionsFrom(modToPlayerNumber(i % 4));
+                        board.updateSkippedPlayers(lastPlayer, myNumber);
 
                         move = generateRandomMove(myNumber);
                         client.sendMove(move);
@@ -76,12 +77,7 @@ public class Client {
         }
     }
 
-    private int modToPlayerNumber(int mod){
-        if (mod == 0)
-            return 4;
-        else
-            return mod;
-    }
+
 
     Random rand =  new Random();
     private Move generateRandomMove(int myself){

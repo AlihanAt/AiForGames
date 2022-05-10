@@ -128,6 +128,20 @@ public class Board {
         return -1;
     }
 
+    public void updateSkippedPlayers(int lastPlayer, int myNumber){
+        //gucken ob spieler geskippt wurden, wenn ja dann deren steine updaten
+        if ((lastPlayer + 1) % 4 != myNumber)
+            for (int i = lastPlayer + 1; i < (myNumber % 4) + 4; i++)
+                updateStonePositionsFrom(modToPlayerNumber(i % 4));
+    }
+
+    private int modToPlayerNumber(int mod){
+        if (mod == 0)
+            return 4;
+        else
+            return mod;
+    }
+
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
