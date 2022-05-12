@@ -10,7 +10,6 @@ public class Board {
     private final List<BoardField> boardFieldList;
 
     private final Player[] players;
-    private List<Integer> currentPlayerList = Arrays.asList(1,2,3,4);
 
     public Board(){
         players = new Player[]{
@@ -129,25 +128,6 @@ public class Board {
         return -1;
     }
 
-    public int getNextPlayer(int currentPlayer) {
-        if(currentPlayer == 4)
-            return 1;
-        else
-            return currentPlayer++;
-    }
-
-    public void updateSkippedPlayersNew(int nextPlayerNo, int currentPlayerNo){
-
-        while(nextPlayerNo != currentPlayerNo){
-            updateStonePositionsFrom(nextPlayerNo);
-            if(nextPlayerNo != 4)
-                nextPlayerNo++;
-            else
-                nextPlayerNo = 1;
-        }
-
-    }
-
     public void updateSkippedPlayers(int lastPlayer, int myNumber){
         //gucken ob spieler geskippt wurden, wenn ja dann deren steine updaten
         if ((lastPlayer + 1) % 4 != myNumber)
@@ -160,6 +140,10 @@ public class Board {
             return 4;
         else
             return mod;
+    }
+
+    public BoardField[][] getBoard() {
+        return board;
     }
 
     @Override
