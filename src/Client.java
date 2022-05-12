@@ -19,7 +19,7 @@ public class Client {
     }
 
     public void start() throws IOException {
-        NetworkClient client = new NetworkClient("localhost", "alsi", ImageIO.read(new File("mc.png")));
+        NetworkClient client = new NetworkClient("localhost", "alsiiiii", ImageIO.read(new File("mc.png")));
 
         int myNumber = client.getMyPlayerNumber() + 1;
         Player myself = board.getPlayerAndRegister(myNumber);
@@ -31,9 +31,10 @@ public class Client {
 
                 if ((move = client.receiveMove()) != null) {
                     int currentPlayer = board.getPlayerFromMove(move.x, move.y);
-                    //TODO skipplayers updaten aus der sicht von anderen spielern
-                    //if (currentPlayer == myNumber)
-                        // board.updateSkippedPlayers(lastPlayer, currentPlayer);
+
+                    if (currentPlayer != myNumber)
+                         board.updateSkippedPlayers(lastPlayer, currentPlayer);
+
                     lastPlayer = currentPlayer;
                     board.addMove(move.x, move.y);
                 }
@@ -49,28 +50,6 @@ public class Client {
                         client.sendMove(move);
                     }
                 }
-
-//            while ((move = client.receiveMove()) != null) {
-//                    client.sendMove(sendRandomMove(myNumber));
-//
-//
-////                //zug von gegenspielerInnen erhalten
-////                int playerNo = checkMovePosition(move);
-////
-////                if (myself.getNumber() != playerNo) {
-////                    //in board speichern
-////                    board.addStone(move.x, move.y, playerNo);
-////
-////                    //schieben durchführen?
-////                    board.updateStonePositionsFrom(playerNo);
-////                }
-////
-////                if(playerNo == myNumber-1 || (myNumber == 1 && playerNo==4)){
-////                    move = sendRandomMove(myNumber);
-////                    client.sendMove(move);
-////                }
-//
-//            }
             }
         }catch (Exception e){
             System.out.println(board);
