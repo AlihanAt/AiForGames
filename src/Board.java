@@ -1,17 +1,37 @@
-import lenz.htw.gaap.Move;
-
-import java.util.Arrays;
 import java.util.List;
 
 public class Board {
 
-    private final BoardField[][] board = new BoardField[8][8];
+    public Board deepCopy() {
+        return new Board(this.players, this.board);
+    }
+
+    private BoardField[][] getBoardFieldDeepCopy(BoardField[][] boardToClone) {
+        BoardField[][] boardField = new BoardField[boardToClone.length][boardToClone.length];
+        for (int i=0; i<boardField.length; i++){
+            for (int j=0; j<boardField.length; j++){
+                boardField[i][j] = boardToClone[i][j].deepCopy(this);
+            }
+        }
+        return boardField;
+    }
+
+    private Player[] getPlayersDeepCopy(Player[] playersToClone) {
+        return new Player[]{
+                playersToClone[0].deepCopy(),
+                playersToClone[1].deepCopy(),
+                playersToClone[2].deepCopy(),
+                playersToClone[3].deepCopy(),
+        };
+    }
+
+    private final BoardField[][] board;
 
     private final List<BoardField> boardFieldList;
 
     private final Player[] players;
 
-    public Board(){
+    public Board() {
         players = new Player[]{
                 new Player(1, false),
                 new Player(2, false),
@@ -19,9 +39,11 @@ public class Board {
                 new Player(4, false),
         };
 
-        for (int x = 0; x < board.length; x++){
-            for (int y = 0; y < board[x].length; y++){
-                board[x][y] = new BoardField();
+        board = new BoardField[8][8];
+
+        for (int x = 0; x < board.length; x++) {
+            for (int y = 0; y < board[x].length; y++) {
+                board[x][y] = new BoardField(this);
             }
         }
 
@@ -29,9 +51,15 @@ public class Board {
 
     }
 
-    public Player getPlayerAndRegister(int playerNo){
-        players[playerNo-1].registerSelf();
-        return players[playerNo-1];
+    private Board(Player[] playersToClone, BoardField[][] boardToClone) {
+        players = getPlayersDeepCopy(playersToClone);
+        board = getBoardFieldDeepCopy(boardToClone);
+        boardFieldList = ListExtension.twoDArrayToList(board);
+    }
+
+    public Player getPlayerAndRegister(int playerNo) {
+        players[playerNo - 1].registerSelf();
+        return players[playerNo - 1];
     }
 
     private boolean addStone(int x, int y, int playerNo) {
@@ -55,7 +83,7 @@ public class Board {
         clearPushState();
     }
 
-    private int getPushDir(int playerNo, boolean isXAxis){
+    private int getPushDir(int playerNo, boolean isXAxis) {
         if ((isXAxis && playerNo == 2) || (!isXAxis && playerNo == 1))
             return 1;
         else if ((isXAxis && playerNo == 4) || (!isXAxis && playerNo == 3))
@@ -72,11 +100,10 @@ public class Board {
         if (isWithinBounds(nextPosX, nextPosY)) {
             board[currentPosX][currentPosY].clearField();
             return;
-        }
-        else if (board[nextPosX][nextPosY].isFieldInUse()) {
+        } else if (board[nextPosX][nextPosY].isFieldInUse()) {
             boolean samePlayer = board[currentPosX][currentPosY].isSamePlayerAs(board[nextPosX][nextPosY]);
 
-            if(!samePlayer)
+            if (!samePlayer)
                 board[currentPosX][currentPosY].addPoint();
 
             pushStone(nextPosX, nextPosY, pushDirX, pushDirY);
@@ -85,7 +112,7 @@ public class Board {
         board[currentPosX][currentPosY].pushStone(board[nextPosX][nextPosY]);
     }
 
-    private void clearPushState(){
+    private void clearPushState() {
         for (BoardField field : boardFieldList) {
             field.clearPushState();
         }
@@ -98,7 +125,7 @@ public class Board {
     public void addMove(int x, int y) {
         int playerNo = getPlayerFromMove(x, y);
 
-        if(playerNo == -1)
+        if (playerNo == -1)
             return;
 
         updateStonePositionsFrom(playerNo);
@@ -106,36 +133,33 @@ public class Board {
         addStone(x, y, playerNo);
     }
 
-    public int getPlayerFromMove(int x, int y){
+    public int getPlayerFromMove(int x, int y) {
 
-        if(y == 0){
+        if (y == 0) {
             //p0
             return 1;
-        }
-        else if (x == 0){
+        } else if (x == 0) {
             //p1
             return 2;
-        }
-        else if (y == 7){
+        } else if (y == 7) {
             //p2
             return 3;
-        }
-        else if (x == 7){
+        } else if (x == 7) {
             //p3
             return 4;
         }
-        System.out.println("invalid move" +x +"," +y);
+        System.out.println("invalid move" + x + "," + y);
         return -1;
     }
 
-    public void updateSkippedPlayers(int lastPlayer, int myNumber){
+    public void updateSkippedPlayers(int lastPlayer, int myNumber) {
         //gucken ob spieler geskippt wurden, wenn ja dann deren steine updaten
         if ((lastPlayer + 1) % 4 != myNumber)
             for (int i = lastPlayer + 1; i < (myNumber % 4) + 4; i++)
                 updateStonePositionsFrom(modToPlayerNumber(i % 4));
     }
 
-    private int modToPlayerNumber(int mod){
+    private int modToPlayerNumber(int mod) {
         if (mod == 0)
             return 4;
         else
@@ -150,18 +174,21 @@ public class Board {
     public String toString() {
         StringBuilder str = new StringBuilder();
 
-        for (int x = 0; x < board.length; x++){
-            for (int y = 0; y < board[x].length; y++){
+        for (int x = 0; x < board.length; x++) {
+            for (int y = 0; y < board[x].length; y++) {
 
                 str.append(board[x][y]);
-                if(y+1 != board[x].length)
+                if (y + 1 != board[x].length)
                     str.append(",");
             }
-            if(x+1 != board.length)
+            if (x + 1 != board.length)
                 str.append("\n");
         }
 
         return str.toString();
     }
 
+    public Player getPlayer(int playerNo) {
+        return players[playerNo-1];
+    }
 }

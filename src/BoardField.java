@@ -1,5 +1,16 @@
 public class BoardField {
     private Stone stone;
+    private final Board board;
+
+    public BoardField(Board board){
+        this.board = board;
+    }
+
+    public BoardField deepCopy(Board board){
+        BoardField b =  new BoardField(board);
+        b.stone = this.stone.deepCopy();
+        return b;
+    }
 
     private Stone getStone() {
         return stone;
@@ -11,7 +22,7 @@ public class BoardField {
 
     public boolean createStone(Player player){
         if(stone == null){
-            stone = new Stone(player);
+            stone = new Stone(player.getNumber());
             return true;
         }
         return false;
@@ -26,7 +37,7 @@ public class BoardField {
     }
 
     public boolean isStoneFromPlayer(int playerNo) {
-        return stone != null && stone.getPlayer().getNumber() == playerNo;
+        return stone != null && stone.getPlayerNo() == playerNo;
     }
 
     public void pushStone(BoardField next){
@@ -45,32 +56,35 @@ public class BoardField {
     }
 
     public boolean isSamePlayerAs(BoardField next) {
-        return this.getStone().getPlayer().getNumber() == next.getStone().getPlayer().getNumber();
+        return this.getStone().getPlayerNo() == next.getStone().getPlayerNo();
     }
 
     public void addPoint() {
-        this.getStone().getPlayer().addPoints(1);
+        if(this.getStone().playerNo == 0)
+            return;
+
+        board.getPlayer(this.getStone().getPlayerNo()).addPoints(1);
     }
 
     @Override
     public String toString() {
-        if(stone == null || stone.getPlayer() == null)
+        if(stone == null || stone.getPlayerNo() == 0)
             return "-";
 
-        return "" + stone.getPlayer().getNumber();
+        return "" + stone.getPlayerNo();
     }
 
     //TODO static vllt weg, mal schauen
     private static final class Stone {
-        private final Player player;
+        private final int playerNo;
         private boolean wasPushed;
 
-        public Stone(Player player) {
-            this.player = player;
+        public Stone(int player) {
+            this.playerNo = player;
         }
 
-        public Player getPlayer() {
-            return player;
+        public int getPlayerNo() {
+            return playerNo;
         }
 
         public boolean wasPushed() {
@@ -83,6 +97,10 @@ public class BoardField {
 
         public void resetPush() {
             wasPushed = false;
+        }
+
+        public Stone deepCopy() {
+            return new Stone(playerNo);
         }
     }
 

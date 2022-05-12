@@ -11,6 +11,12 @@ public class Player {
         this.isMe = isMe;
     }
 
+    public Player deepCopy(){
+        Player p = new Player(this.number, this.isMe);
+        p.points = this.points;
+        return p;
+    }
+
     public void addPoints(int count){
         this.points += count;
     }

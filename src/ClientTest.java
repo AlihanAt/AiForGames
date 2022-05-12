@@ -2,6 +2,8 @@ import lenz.htw.gaap.Move;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.logging.SimpleFormatter;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ClientTest {
@@ -13,10 +15,10 @@ class ClientTest {
 
     @BeforeEach
     void setUp() {
-        c1 = new Client(1);
-        c2 = new Client(2);
-        c3 = new Client(3);
-        c4 = new Client(4);
+        c1 = new Client(1, new SimpleBoardAi());
+        c2 = new Client(2, new RandomAiLogic());
+        c3 = new Client(3, new SimpleBoardAi());
+        c4 = new Client(4, new RandomAiLogic());
     }
 
     @Test
