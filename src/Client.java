@@ -12,6 +12,7 @@ public class Client {
 
     private boolean init;
     private int lastPlayer = 0;
+    private int nextPlayerShouldBe = 1;
 
     public static void main(String[] args) throws IOException {
         Client client = new Client();
@@ -28,23 +29,34 @@ public class Client {
 
         try {
             while (true) {
-
+                //gucken was passiert wenn ich meinen eigenen move zurückkriege
                 if ((move = client.receiveMove()) != null) {
+
                     int currentPlayer = board.getPlayerFromMove(move.x, move.y);
-                    //TODO skipplayers updaten aus der sicht von anderen spielern
-                    //if (currentPlayer == myNumber)
-                        // board.updateSkippedPlayers(lastPlayer, currentPlayer);
-                    lastPlayer = currentPlayer;
-                    board.addMove(move.x, move.y);
+
+                    if(nextPlayerShouldBe != currentPlayer && currentPlayer != myNumber){
+                    //spieler wurde geskippt, geskippte spieler steine schieben
+                        board.updateSkippedPlayersNew(nextPlayerShouldBe, currentPlayer);
+                    }
+
+                    board.addMove(move.x,move.y);
+                    nextPlayerShouldBe = board.getNextPlayer(currentPlayer);
                 }
-                //my turn
                 else {
+                //my turn
                     if (myNumber == 1 && !init) {
+                    //wenn ich den ersten zug des spiels mache
                         client.sendMove(generateRandomMove(myNumber));
                         init = true;
+                        nextPlayerShouldBe = 2;
                     } else {
-                        board.updateSkippedPlayers(lastPlayer, myNumber);
+                    //wenn ich dran bin einen zug zu machen
 
+                        if(nextPlayerShouldBe != myNumber){
+                            //hier wurde was geskippt wurde
+                            board.updateSkippedPlayersNew(nextPlayerShouldBe, myNumber);
+                        }
+                        nextPlayerShouldBe = board.getNextPlayer(myNumber);
                         move = generateRandomMove(myNumber);
                         client.sendMove(move);
                     }
@@ -83,19 +95,21 @@ public class Client {
     private Move generateRandomMove(int myself){
         int value = rand.nextInt(5) + 1;
 
-        if (myself == 1){
-            return new Move(value,0);
-        }
-        else if (myself == 2){
-            return new Move(0,value);
-        }
-        else if (myself == 3){
-            return new Move(value,7);
-        }
-        else if (myself == 4){
-            return new Move(7,value);
-        }
-        return null;
+        return new Move(0,0);
+
+//        if (myself == 1){
+//            return new Move(value,0);
+//        }
+//        else if (myself == 2){
+//            return new Move(0,value);
+//        }
+//        else if (myself == 3){
+//            return new Move(value,7);
+//        }
+//        else if (myself == 4){
+//            return new Move(7,value);
+//        }
+//        return null;
     }
 
 
