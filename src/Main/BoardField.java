@@ -1,3 +1,5 @@
+package Main;
+
 public class BoardField {
     private Stone stone;
     private final Board board;
@@ -8,7 +10,11 @@ public class BoardField {
 
     public BoardField deepCopy(Board board){
         BoardField b =  new BoardField(board);
-        b.stone = this.stone.deepCopy();
+        if(this.stone != null)
+            b.stone = this.stone.deepCopy();
+        else
+            b.stone = null;
+
         return b;
     }
 

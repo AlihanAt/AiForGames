@@ -1,10 +1,13 @@
+package Test;
+
+import Main.Client;
+import Main.Logic.AdvancedAi;
+import Main.Logic.RandomAiLogic;
+import Main.Logic.SimpleBoardAi;
 import lenz.htw.gaap.Move;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.logging.SimpleFormatter;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ClientTest {
 
@@ -15,7 +18,7 @@ class ClientTest {
 
     @BeforeEach
     void setUp() {
-        c1 = new Client(1, new SimpleBoardAi());
+        c1 = new Client(1, new AdvancedAi());
         c2 = new Client(2, new RandomAiLogic());
         c3 = new Client(3, new SimpleBoardAi());
         c4 = new Client(4, new RandomAiLogic());
@@ -26,8 +29,8 @@ class ClientTest {
 
         for (int i=1; i<=12; i++){
             doTurn(i%4);
-            assertEquals(c1.getBoard().toString(), c2.getBoard().toString());
-            assertTrue(c1.areEqual(c2));
+            Assertions.assertEquals(c1.getBoard().toString(), c2.getBoard().toString());
+            Assertions.assertTrue(c1.areEqual(c2));
         }
     }
 

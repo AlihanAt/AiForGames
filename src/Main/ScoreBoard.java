@@ -1,3 +1,5 @@
+package Main;
+
 public class ScoreBoard {
 
     private Player[] players = new Player[4];
@@ -8,10 +10,10 @@ public class ScoreBoard {
     private Player playerD;
 
     private ScoreBoard(){
-//        this.playerA = new Player();
-//        this.playerB = new Player();
-//        this.playerC = new Player();
-//        this.playerD = new Player();
+//        this.playerA = new Main.Player();
+//        this.playerB = new Main.Player();
+//        this.playerC = new Main.Player();
+//        this.playerD = new Main.Player();
     }
 
     public Player getPlayerA(){

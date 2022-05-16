@@ -1,3 +1,7 @@
+package Test;
+
+import Main.Board;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,7 +20,7 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-\n" +
                 "-,-,-,-,-,-,-,-\n" +
                 "-,-,-,-,-,-,-,-";
-        assertEquals(expected, board.toString());
+        Assertions.assertEquals(expected, board.toString());
 
         board.addMove(6,0);
         expected =
@@ -28,7 +32,7 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-\n" +
                 "1,-,-,-,-,-,-,-\n" +
                 "-,-,-,-,-,-,-,-";
-        assertEquals(expected, board.toString());
+        Assertions.assertEquals(expected, board.toString());
 
         board.addMove(0,6);
         expected =
@@ -40,7 +44,7 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-\n" +
                 "1,-,-,-,-,-,-,-\n" +
                 "-,-,-,-,-,-,-,-";
-        assertEquals(expected, board.toString());
+        Assertions.assertEquals(expected, board.toString());
 
         board.addMove(6,0);
         expected =
@@ -52,7 +56,7 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-\n" +
                 "1,1,-,-,-,-,-,-\n" +
                 "-,-,-,-,-,-,-,-";
-        assertEquals(expected, board.toString());
+        Assertions.assertEquals(expected, board.toString());
 
         board.addMove(4,0);
         expected =
@@ -64,7 +68,7 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-\n" +
                 "-,1,1,-,-,-,-,-\n" +
                 "-,-,-,-,-,-,-,-";
-        assertEquals(expected, board.toString());
+        Assertions.assertEquals(expected, board.toString());
 
         board.addMove(6,0);
         board.addMove(6,0);
@@ -78,7 +82,7 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-\n" +
                 "1,1,1,-,1,1,-,-\n" +
                 "-,-,-,-,-,-,-,-";
-        assertEquals(expected, board.toString());
+        Assertions.assertEquals(expected, board.toString());
 
         board.addMove(6,0);
         board.addMove(6,0);
@@ -91,7 +95,7 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-\n" +
                 "1,1,1,1,1,-,1,1\n" +
                 "-,-,-,-,-,-,-,-";
-        assertEquals(expected, board.toString());
+        Assertions.assertEquals(expected, board.toString());
 
         board.addMove(5,0);
         expected =
@@ -103,7 +107,7 @@ class BoardTest {
                 "1,-,-,-,-,-,-,-\n" +
                 "-,1,1,1,1,1,-,1\n" +
                 "-,-,-,-,-,-,-,-";
-        assertEquals(expected, board.toString());
+        Assertions.assertEquals(expected, board.toString());
 
         board.addMove(7,4);
         expected =
@@ -115,7 +119,7 @@ class BoardTest {
                 "1,-,-,-,-,-,-,-\n" +
                 "-,1,1,1,1,1,-,1\n" +
                 "-,-,-,-,4,-,-,-";
-        assertEquals(expected, board.toString());
+        Assertions.assertEquals(expected, board.toString());
 
         board.addMove(7,4);
         expected =
@@ -127,7 +131,7 @@ class BoardTest {
                 "1,-,-,-,1,-,-,-\n" +
                 "-,1,1,1,4,1,-,1\n" +
                 "-,-,-,-,4,-,-,-";
-        assertEquals(expected, board.toString());
+        Assertions.assertEquals(expected, board.toString());
 
         board.addMove(7,4);
         board.addMove(7,4);
@@ -144,7 +148,7 @@ class BoardTest {
                 "1,-,-,-,4,-,-,-\n" +
                 "-,1,1,1,4,1,-,1\n" +
                 "-,-,-,-,4,-,-,-";
-        assertEquals(expected, board.toString());
+        Assertions.assertEquals(expected, board.toString());
 
         board.addMove(0,5);
         expected =
@@ -156,7 +160,7 @@ class BoardTest {
                 "1,-,-,-,4,-,-,-\n" +
                 "-,1,1,1,4,1,-,1\n" +
                 "-,-,-,-,4,-,-,-";
-        assertEquals(expected, board.toString());
+        Assertions.assertEquals(expected, board.toString());
 
         board.updateStonePositionsFrom(2);
         expected =
@@ -168,7 +172,7 @@ class BoardTest {
                 "1,-,-,-,4,-,-,-\n" +
                 "-,1,1,1,4,1,-,1\n" +
                 "-,-,-,-,4,-,-,-";
-        assertEquals(expected, board.toString());
+        Assertions.assertEquals(expected, board.toString());
 
     }
 
@@ -188,7 +192,7 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-\n" +
                 "1,-,-,-,-,-,-,3\n" +
                 "-,-,-,-,-,-,4,-";
-        assertEquals(expected, board.toString());
+        Assertions.assertEquals(expected, board.toString());
 
         board.updateSkippedPlayers(1, 4);
         expected =
@@ -200,7 +204,7 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-\n" +
                 "1,-,-,-,-,-,3,-\n" +
                 "-,-,-,-,-,-,4,-";
-        assertEquals(expected, board.toString());
+        Assertions.assertEquals(expected, board.toString());
 
         board.updateSkippedPlayers(2, 1);
         expected =
@@ -212,7 +216,7 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-\n" +
                 "1,-,-,-,-,3,4,-\n" +
                 "-,-,-,-,-,-,-,-";
-        assertEquals(expected, board.toString());
+        Assertions.assertEquals(expected, board.toString());
 
         board.updateSkippedPlayers(3, 2);
         expected =
@@ -224,7 +228,7 @@ class BoardTest {
                 "-,-,-,-,-,-,4,-\n" +
                 "-,1,-,-,-,3,-,-\n" +
                 "-,-,-,-,-,-,-,-";
-        assertEquals(expected, board.toString());
+        Assertions.assertEquals(expected, board.toString());
 
         board.updateSkippedPlayers(4, 3);
         expected =
@@ -236,7 +240,7 @@ class BoardTest {
                 "-,-,-,-,-,-,4,-\n" +
                 "-,-,1,-,-,3,-,-\n" +
                 "-,-,-,-,-,-,-,-";
-        assertEquals(expected, board.toString());
+        Assertions.assertEquals(expected, board.toString());
 
     }
 

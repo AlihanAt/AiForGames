@@ -1,3 +1,5 @@
+package Main;
+
 public class Player {
 
     private final int number;

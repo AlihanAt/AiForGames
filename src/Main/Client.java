@@ -1,3 +1,8 @@
+package Main;
+
+import Main.Logic.AdvancedAi;
+import Main.Logic.BoardLogic;
+import Main.Logic.SimpleBoardAi;
 import lenz.htw.gaap.Move;
 import lenz.htw.gaap.net.NetworkClient;
 
