@@ -244,4 +244,63 @@ class BoardTest {
 
     }
 
+    @Test
+    public void testFieldRating(){
+        Board board = new Board();
+        board.getPlayerAndRegister(1);
+        board.addMove(3,0);
+        board.addMove(2,0);
+        board.addMove(0,3);
+        board.addMove(2,7);
+        board.addMove(7,4);
+        String expected =
+                "-,-,-,2,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "1,-,-,-,-,-,-,3\n" +
+                "-,1,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,4,-,-,-";
+        assertEquals(expected, board.toString());
+
+        board.updateStonePositionsFrom(1);
+        board.updateStonePositionsFrom(1);
+//        board.updateStonePositionsFrom(1);
+        board.updateStonePositionsFrom(2);
+        board.updateStonePositionsFrom(2);
+        board.updateStonePositionsFrom(3);
+        board.updateStonePositionsFrom(3);
+        board.updateStonePositionsFrom(3);
+        board.updateStonePositionsFrom(4);
+        board.updateStonePositionsFrom(4);
+//        board.updateStonePositionsFrom(4);
+//        board.updateStonePositionsFrom(4);
+
+        expected =
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,1,2,3,-,-,-\n" +
+                "-,-,-,1,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,4,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-";
+        Assertions.assertEquals(expected, board.toString());
+
+        assertEquals(-1, board.fieldRating(1));
+
+        expected =
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,1,3,-,-,-\n" +
+                "-,-,-,2,-,-,-,-\n" +
+                "-,-,-,-,1,4,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-";
+        Assertions.assertEquals(expected, board.toString());
+
+    }
+
 }

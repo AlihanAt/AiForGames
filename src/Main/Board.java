@@ -4,34 +4,13 @@ import java.util.List;
 
 public class Board {
 
-    public Board deepCopy() {
-        return new Board(this.players, this.board);
-    }
-
-    private BoardField[][] getBoardFieldDeepCopy(BoardField[][] boardToClone) {
-        BoardField[][] boardField = new BoardField[boardToClone.length][boardToClone.length];
-        for (int i=0; i<boardField.length; i++){
-            for (int j=0; j<boardField.length; j++){
-                boardField[i][j] = boardToClone[i][j].deepCopy(this);
-            }
-        }
-        return boardField;
-    }
-
-    private Player[] getPlayersDeepCopy(Player[] playersToClone) {
-        return new Player[]{
-                playersToClone[0].deepCopy(),
-                playersToClone[1].deepCopy(),
-                playersToClone[2].deepCopy(),
-                playersToClone[3].deepCopy(),
-        };
-    }
-
     private final BoardField[][] board;
-
     private final List<BoardField> boardFieldList;
-
     private final Player[] players;
+
+    private int myNumber;
+    public int enemyPointsThisRound = 0;
+    public int myPointsThisRound = 0;
 
     public Board() {
         players = new Player[]{
@@ -60,6 +39,7 @@ public class Board {
     }
 
     public Player getPlayerAndRegister(int playerNo) {
+        myNumber = playerNo;
         players[playerNo - 1].registerSelf();
         return players[playerNo - 1];
     }
@@ -105,8 +85,9 @@ public class Board {
         } else if (board[nextPosX][nextPosY].isFieldInUse()) {
             boolean samePlayer = board[currentPosX][currentPosY].isSamePlayerAs(board[nextPosX][nextPosY]);
 
-            if (!samePlayer)
+            if (!samePlayer) {
                 board[currentPosX][currentPosY].addPoint();
+            }
 
             pushStone(nextPosX, nextPosY, pushDirX, pushDirY);
         }
@@ -120,6 +101,11 @@ public class Board {
         }
     }
 
+    private void clearPointsThisRound() {
+        myPointsThisRound = 0;
+        enemyPointsThisRound = 0;
+    }
+
     private boolean isWithinBounds(int currentPosX, int currentPosY) {
         return currentPosX >= board.length || currentPosY >= board.length || currentPosX < 0 || currentPosY < 0;
     }
@@ -131,7 +117,6 @@ public class Board {
             return;
 
         updateStonePositionsFrom(playerNo);
-
         addStone(x, y, playerNo);
     }
 
@@ -192,5 +177,55 @@ public class Board {
 
     public Player getPlayer(int playerNo) {
         return players[playerNo-1];
+    }
+
+    public int fieldRating(int playerNo){
+
+        int tempPlayerNo;
+        if(playerNo == 4)
+            tempPlayerNo = 1;
+        else
+            tempPlayerNo = playerNo+1;
+
+        while (playerNo != tempPlayerNo){
+            updateStonePositionsFrom(tempPlayerNo);
+            tempPlayerNo++;
+
+            if(tempPlayerNo == 5)
+                tempPlayerNo = 1;
+        }
+
+        updateStonePositionsFrom(playerNo);
+
+        int rating = enemyPointsThisRound-myPointsThisRound;
+        clearPointsThisRound();
+        return rating;
+    }
+
+    public Board deepCopy() {
+        return new Board(this.players, this.board);
+    }
+
+    private BoardField[][] getBoardFieldDeepCopy(BoardField[][] boardToClone) {
+        BoardField[][] boardField = new BoardField[boardToClone.length][boardToClone.length];
+        for (int i=0; i<boardField.length; i++){
+            for (int j=0; j<boardField.length; j++){
+                boardField[i][j] = boardToClone[i][j].deepCopy(this);
+            }
+        }
+        return boardField;
+    }
+
+    private Player[] getPlayersDeepCopy(Player[] playersToClone) {
+        return new Player[]{
+                playersToClone[0].deepCopy(),
+                playersToClone[1].deepCopy(),
+                playersToClone[2].deepCopy(),
+                playersToClone[3].deepCopy(),
+        };
+    }
+
+    public int getMyNumber() {
+        return myNumber;
     }
 }

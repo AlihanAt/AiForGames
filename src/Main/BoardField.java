@@ -1,5 +1,7 @@
 package Main;
 
+import java.sql.SQLOutput;
+
 public class BoardField {
     private Stone stone;
     private final Board board;
@@ -70,6 +72,13 @@ public class BoardField {
             return;
 
         board.getPlayer(this.getStone().getPlayerNo()).addPoints(1);
+
+        if(this.getStone().getPlayerNo() == board.getMyNumber()){
+            board.myPointsThisRound++;
+        }
+        else {
+            board.enemyPointsThisRound++;
+        }
     }
 
     @Override
