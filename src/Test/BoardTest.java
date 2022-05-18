@@ -266,7 +266,6 @@ class BoardTest {
 
         board.updateStonePositionsFrom(1);
         board.updateStonePositionsFrom(1);
-//        board.updateStonePositionsFrom(1);
         board.updateStonePositionsFrom(2);
         board.updateStonePositionsFrom(2);
         board.updateStonePositionsFrom(3);
@@ -274,8 +273,6 @@ class BoardTest {
         board.updateStonePositionsFrom(3);
         board.updateStonePositionsFrom(4);
         board.updateStonePositionsFrom(4);
-//        board.updateStonePositionsFrom(4);
-//        board.updateStonePositionsFrom(4);
 
         expected =
                 "-,-,-,-,-,-,-,-\n" +

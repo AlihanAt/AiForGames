@@ -31,6 +31,10 @@ public class Player {
         return number;
     }
 
+    public int getPoints() {
+        return points;
+    }
+
     public void registerSelf() {
         isMe = true;
     }

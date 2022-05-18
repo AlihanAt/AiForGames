@@ -10,10 +10,11 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 
-public class Client {
+public class Client implements Runnable{
 
-    public Client(){
-        logic = new AdvancedAi();
+    public Client(String name, BoardLogic logic){
+        this.name = name;
+        this.logic = logic;
     }
 
     public Client(BoardLogic logic){
@@ -30,20 +31,22 @@ public class Client {
         this.logic = logic;
     }
 
+    private String name;
+
     private final Board board = new Board();
-    private final BoardLogic logic;
+    private BoardLogic logic;
 
     private int myNumber;
     private boolean init;
     private int lastPlayer = 0;
 
-    public static void main(String[] args) throws IOException {
-        Client client = new Client();
-        client.start();
-    }
+//    public static void main(String[] args) throws IOException {
+//        Client client = new Client();
+//        client.start();
+//    }
 
     public void start() throws IOException {
-        NetworkClient client = new NetworkClient("localhost", "alsi", ImageIO.read(new File("mc.png")));
+        NetworkClient client = new NetworkClient("localhost", name, ImageIO.read(new File("mc.png")));
 
         myNumber = client.getMyPlayerNumber() + 1;
         Player myself = board.getPlayerAndRegister(myNumber);
@@ -60,7 +63,7 @@ public class Client {
                 }
             }
         }catch (Exception e){
-            System.out.println(board);
+            System.out.println(e);
         }
     }
 
@@ -77,7 +80,7 @@ public class Client {
         int currentPlayer = board.getPlayerFromMove(move.x, move.y);
 
         if (currentPlayer != myNumber)
-         board.updateSkippedPlayers(lastPlayer, currentPlayer);
+            board.updateSkippedPlayers(lastPlayer, currentPlayer);
 
         lastPlayer = currentPlayer;
         board.addMove(move.x, move.y);
@@ -91,4 +94,12 @@ public class Client {
         return board;
     }
 
+    @Override
+    public void run() {
+        try {
+            start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
