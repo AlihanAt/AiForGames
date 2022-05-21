@@ -5,7 +5,7 @@ import lenz.htw.gaap.Move;
 
 import java.util.Random;
 
-public abstract class BoardLogic {
+public abstract class AiLogic {
 
     public abstract Move generateMove(Board board, int myNumber);
 

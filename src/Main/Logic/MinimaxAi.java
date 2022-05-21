@@ -1,10 +1,11 @@
 package Main.Logic;
 
 import Main.Board;
-import Main.Player;
 import lenz.htw.gaap.Move;
 
-public class MinimaxAi extends BoardLogic{
+public class MinimaxAi extends AiLogic {
+
+    final int DEPTH = 8;
 
     private int myNumber;
     private Move bestMove;
@@ -12,7 +13,7 @@ public class MinimaxAi extends BoardLogic{
     @Override
     public Move generateMove(Board board, int myNumber) {
         this.myNumber = myNumber;
-        minimax(8, myNumber, board);
+        minimax(DEPTH, myNumber, board);
         return bestMove;
     }
 
@@ -49,6 +50,10 @@ public class MinimaxAi extends BoardLogic{
             if(playerNo == myNumber){
 
                 if(rating > max){
+                    max = rating;
+                    bestMove = move;
+                }
+                else  if(rating == max && Math.random() > 0.5){
                     max = rating;
                     bestMove = move;
                 }

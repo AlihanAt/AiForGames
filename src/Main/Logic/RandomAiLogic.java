@@ -5,7 +5,7 @@ import lenz.htw.gaap.Move;
 
 import java.util.Random;
 
-public class RandomAiLogic extends BoardLogic {
+public class RandomAiLogic extends AiLogic {
 
     Random rand = new Random();
 

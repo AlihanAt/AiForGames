@@ -3,9 +3,7 @@ package Main.Logic;
 import Main.Board;
 import lenz.htw.gaap.Move;
 
-import javax.sound.midi.Soundbank;
-
-public class AdvancedAi extends BoardLogic {
+public class AdvancedAi extends AiLogic {
 
     @Override
     public Move generateMove(Board board, int myNumber) {

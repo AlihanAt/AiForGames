@@ -3,7 +3,7 @@ package Main.Logic;
 import Main.Board;
 import lenz.htw.gaap.Move;
 
-public class SimpleBoardAi extends BoardLogic {
+public class SimpleBoardAi extends AiLogic {
 
     @Override
     public Move generateMove(Board board, int myNumber) {

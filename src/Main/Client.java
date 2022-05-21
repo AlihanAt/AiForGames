@@ -1,7 +1,6 @@
 package Main;
 
-import Main.Logic.AdvancedAi;
-import Main.Logic.BoardLogic;
+import Main.Logic.AiLogic;
 import Main.Logic.SimpleBoardAi;
 import lenz.htw.gaap.Move;
 import lenz.htw.gaap.net.NetworkClient;
@@ -12,12 +11,12 @@ import java.io.IOException;
 
 public class Client implements Runnable{
 
-    public Client(String name, BoardLogic logic){
+    public Client(String name, AiLogic logic){
         this.name = name;
         this.logic = logic;
     }
 
-    public Client(BoardLogic logic){
+    public Client(AiLogic logic){
         this.logic = logic;
     }
 
@@ -26,7 +25,7 @@ public class Client implements Runnable{
         logic = new SimpleBoardAi();
     }
 
-    public Client(int playerNo, BoardLogic logic){
+    public Client(int playerNo, AiLogic logic){
         myNumber = playerNo;
         this.logic = logic;
     }
@@ -34,7 +33,7 @@ public class Client implements Runnable{
     private String name;
 
     private final Board board = new Board();
-    private BoardLogic logic;
+    private AiLogic logic;
 
     private int myNumber;
     private boolean init;
