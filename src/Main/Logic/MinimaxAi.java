@@ -42,26 +42,24 @@ public class MinimaxAi extends AiLogic {
 
             Move move = getMoveFromPlayerNumber(playerNo, i);
 
-            if(!copy.addStone(move.x, move.y, playerNo))
+            if(!copy.addStone(move.x, move.y, playerNo)) {
                 continue;
+            }
 
             int rating = minimax(depth-1, getNextPlayer(playerNo), copy);
 
             if(playerNo == myNumber){
 
-                if(rating > max){
+                if(rating > max || (rating == max && Math.random() > 0.5)){
                     max = rating;
-                    bestMove = move;
-                }
-                else  if(rating == max && Math.random() > 0.5){
-                    max = rating;
-                    bestMove = move;
+                    if(depth==DEPTH)
+                        bestMove = move;
                 }
             }
             else{
                 min = Math.min(rating,min);
-
             }
+
             copy.clearStone(move.x, move.y);
         }
 

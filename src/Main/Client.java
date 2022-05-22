@@ -39,11 +39,6 @@ public class Client implements Runnable{
     private boolean init;
     private int lastPlayer = 0;
 
-//    public static void main(String[] args) throws IOException {
-//        Client client = new Client();
-//        client.start();
-//    }
-
     public void start() throws IOException {
         NetworkClient client = new NetworkClient("localhost", name, ImageIO.read(new File("mc.png")));
 
@@ -63,6 +58,8 @@ public class Client implements Runnable{
             }
         }catch (Exception e){
             System.out.println(e);
+            System.out.println(board.toString());
+            System.out.println("Scoreboard for PlayerNo " + myNumber + ": " + board.getPlayerScore(1) + ", " + board.getPlayerScore(2) + ", " + board.getPlayerScore(3) + ", " + board.getPlayerScore(4) +"\n");
         }
     }
 

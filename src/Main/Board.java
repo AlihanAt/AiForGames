@@ -109,8 +109,8 @@ public class Board {
         enemyPointsThisRound = 0;
     }
 
-    private boolean isWithinBounds(int currentPosX, int currentPosY) {
-        return currentPosX >= boardFields.length || currentPosY >= boardFields.length || currentPosX < 0 || currentPosY < 0;
+    private boolean isWithinBounds(int posX, int posY) {
+        return posX >= boardFields.length || posY >= boardFields.length || posX < 0 || posY < 0;
     }
 
     public void addMove(int x, int y) {

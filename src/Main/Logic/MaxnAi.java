@@ -5,7 +5,7 @@ import lenz.htw.gaap.Move;
 
 public class MaxnAi extends AiLogic {
 
-    final int DEPTH = 8;
+    final int DEPTH = 9;
 
     private int myNumber;
     private Move bestMove;
@@ -40,21 +40,21 @@ public class MaxnAi extends AiLogic {
             Tupel rating = maxn(depth-1, getNextPlayer(playerNo), copy);
 
             if(rating.getPointsOfPlayer(playerNo) > maxTupel.getPointsOfPlayer(playerNo)){
-                System.out.println("Best Tupel: " + rating + " - davor: " + maxTupel);
-                maxTupel.replace(rating);
-                if(playerNo == myNumber){
-                    bestMove = move;
-                }
-            }
-            else if(rating.getPointsOfPlayer(playerNo) == maxTupel.getPointsOfPlayer(playerNo) && Math.random() > 0.5){
-                System.out.println("Best Tupel: " + rating + " - davor: " + maxTupel);
-                maxTupel.replace(rating);
-                if(playerNo == myNumber){
+//                System.out.println("Best Tupel: " + rating + " - davor: " + maxTupel);
+
+//                if(rating.getPointsOfPlayer(playerNo) == maxTupel.getPointsOfPlayer(playerNo) && Math.random() > 0.9){
+//                    maxTupel.replace(rating);
+//                    System.out.println("-- Chance gewonnen");
+//                }
+//                else
+                    maxTupel.replace(rating);
+
+                if(playerNo == myNumber && depth == DEPTH){
                     bestMove = move;
                 }
             }
 
-            board.clearStone(move.x, move.y);
+            copy.clearStone(move.x, move.y);
         }
         return maxTupel;
     }

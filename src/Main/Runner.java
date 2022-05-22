@@ -9,8 +9,8 @@ public class Runner {
 
     public static void main(String[] args) {
 
-        Client c1 = new Client("Alsi", new MaxnAi());
-        Client c2 = new Client("Oli", new MaxnAi());
+        Client c1 = new Client("Alsi", new MinimaxAi());
+        Client c2 = new Client("Oli", new MinimaxAi());
         Client c3 = new Client("Dennoos", new MaxnAi());
         Client c4 = new Client("jann", new MaxnAi());
 

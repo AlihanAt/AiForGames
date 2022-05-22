@@ -1,8 +1,14 @@
 package Test;
 
 import Main.Board;
+import Main.Logic.MaxnAi;
+import Main.Logic.MinimaxAi;
+import lenz.htw.gaap.Move;
+import lenz.htw.gaap.b;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.awt.image.MemoryImageSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -298,6 +304,244 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-";
         Assertions.assertEquals(expected, board.toString());
 
+    }
+
+    @Test
+    public void testPoints(){
+        Board board = new Board();
+        board.getPlayerAndRegister(1);
+
+        board.addStone(1,1,3);
+        board.addStone(1,0,1);
+        board.addStone(1,2,1);
+        board.addStone(1,3,1);
+        board.updateStonePositionsFrom(1);
+
+//        board.addMove(3,0);
+
+        String expected =
+                "-,-,-,-,-,-,-,-\n" +
+                "-,1,3,1,1,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-";
+        assertEquals(expected, board.toString());
+
+        assertEquals(1, board.getPlayerScore(1));
+        assertEquals(0, board.getPlayerScore(3));
+
+        board.addStone(1,0,3);
+        board.updateStonePositionsFrom(3);
+        expected =
+                "-,-,-,-,-,-,-,-\n" +
+                "1,3,-,1,1,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-";
+
+        assertEquals(expected, board.toString());
+        assertEquals(1, board.getPlayerScore(3));
+
+    }
+
+    @Test
+    public void placementTest(){
+        Board board = new Board();
+        board.getPlayerAndRegister(1);
+        board.addStone(1,0, 3);
+        board.addStone(2,0, 3);
+        board.addStone(4,0, 3);
+        board.addStone(5,0, 3);
+        board.addStone(6,0, 3);
+
+        String expected =
+                "-,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-";
+        assertEquals(expected, board.toString());
+
+        assertFalse(board.addStone(1,0, 1));
+
+        expected =
+                "-,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-";
+        assertEquals(expected, board.toString());
+
+        board.updateStonePositionsFrom(1);
+        expected =
+                "-,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-";
+        assertEquals(expected, board.toString());
+
+    }
+
+    @Test
+    public void deepCopyTest(){
+        Board board = new Board();
+        board.getPlayerAndRegister(1);
+        board.addStone(1,0, 3);
+        board.addStone(2,0, 3);
+        board.addStone(4,0, 3);
+        board.addStone(5,0, 3);
+        board.addStone(6,0, 3);
+
+        Board copy = board.deepCopy();
+
+
+        assertEquals(copy.toString(), board.toString());
+
+        copy.addStone(7, 1 ,4);
+        Board copy2 = copy.deepCopy();
+
+        assertEquals(copy.toString(), copy2.toString());
+        assertNotEquals(copy.toString(), board.toString());
+
+    }
+
+    @Test
+    public void AlgorithmPlacementTest(){
+        Board board = new Board();
+        board.getPlayerAndRegister(1);
+        board.addStone(1,0, 3);
+        board.addStone(2,0, 3);
+        board.addStone(4,0, 3);
+        board.addStone(5,0, 3);
+        board.addStone(6,0, 3);
+
+        String expected =
+                "-,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-";
+        assertEquals(expected, board.toString());
+
+        MaxnAi maxn = new MaxnAi();
+        Move maxnMove = maxn.generateMove(board, 1);
+
+        MinimaxAi minimax = new MinimaxAi();
+        Move minimaxMove = maxn.generateMove(board, 1);
+
+        assertEquals(maxnMove.x, 3);
+        assertEquals(maxnMove.y, 0);
+//        assertEquals(minimaxMove, new Move(3,0));
+        assertEquals(minimaxMove.x, 3);
+        assertEquals(minimaxMove.y, 0);
+    }
+
+    @Test
+    public void stringToBoardTest(){
+        String expected =
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,2,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,4,-\n" +
+                "-,-,1,-,-,3,-,-\n" +
+                "-,-,-,-,-,-,-,-";
+
+        Board board = stringToBoard(expected);
+        assertEquals(expected, board.toString());
+
+        expected =
+                "-,-,-,-,3,-,-,1\n"+
+                "1,1,1,1,2,-,1,4\n"+
+                "-,-,-,2,-,1,4,2\n"+
+                "-,-,-,1,3,-,4,2\n"+
+                "-,3,-,-,-,-,4,-\n"+
+                "3,4,-,-,2,4,3,-\n"+
+                "-,-,2,-,-,-,4,3\n"+
+                "2,-,-,-,1,-,4,-";
+        board = stringToBoard(expected);
+        MinimaxAi minimaxAi = new MinimaxAi();
+        Move move = minimaxAi.generateMove(board, 2);
+        System.out.println(move.x + ", "  + move.y);
+
+
+//        assertFalse(board.addStone(0,4,2));
+//        assertEquals(expected, board.toString());
+
+        expected =
+                "-,-,-,3,-,-,-,1\n"+
+                "-,1,1,1,1,-,4,-\n"+
+                "-,-,-,-,-,-,1,4\n"+
+                "-,-,-,3,2,-,4,-\n"+
+                "3,4,2,-,1,4,3,2\n"+
+                "-,-,-,-,-,4,3,2\n"+
+                "-,-,-,-,-,-,4,-\n"+
+                "-,-,-,-,2,1,-,-";
+        board = stringToBoard(expected);
+        MaxnAi maxnAi = new MaxnAi();
+        move = maxnAi.generateMove(board, 3);
+        System.out.println(move.x + ", "  + move.y);
+
+//        assertFalse(board.addStone(4,7,3));
+//        assertEquals(expected, board.toString());
+    }
+
+    public Board stringToBoard(String boardString){
+
+        Board board  = new Board();
+        char[] chars = boardString.toCharArray();
+
+        int counterX = 0;
+        int counterY = 0;
+
+        for(int i=0; i<chars.length; i++){
+
+            if(Character.isDigit(chars[i]) || chars[i] == '-'){
+
+                if(Character.isDigit(chars[i])){
+                    int x = Character.getNumericValue(chars[i]);
+                    board.addStone(counterX, counterY, x);
+                }
+
+                counterY += 1;
+
+                if(counterY >= 8){
+                    counterX += 1;
+                    counterY = 0;
+                }
+            }
+//            else if(chars[i] == '1'){
+//
+//            }else if(chars[i] == '2'){
+//
+//            }else if(chars[i] == '3'){
+//
+//            }else if(chars[i] == '4'){
+//
+//            }
+        }
+
+        return board;
     }
 
 }
