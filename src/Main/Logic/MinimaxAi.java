@@ -1,14 +1,19 @@
 package Main.Logic;
 
+import Main.RatingFunction;
 import Main.Board;
 import lenz.htw.gaap.Move;
 
 public class MinimaxAi extends AiLogic {
 
-    final int DEPTH = 12;
+    final int DEPTH = 8;
 
     private int myNumber;
     private Move bestMove;
+
+    public MinimaxAi(RatingFunction bewertungsFunktion) {
+        super(bewertungsFunktion);
+    }
 
     @Override
     public Move generateMove(Board board, int myNumber) {

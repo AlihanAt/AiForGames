@@ -5,78 +5,57 @@ import lenz.htw.gaap.Move;
 
 public class GameMock {
 
-    // error catchen, worng move und game vorbei
-    // game reproduzieren
+    public GameMock(RatingFunction[] ratingFunctions){
+        clients[0] = new Client("c1", 1, new MaxnAi(ratingFunctions[0]));
+        clients[1] = new Client("c2", 2, new MaxnAi(ratingFunctions[1]));
+        clients[2] = new Client("c3", 3, new MaxnAi(ratingFunctions[2]));
+        clients[3] = new Client("c4", 4, new MaxnAi(ratingFunctions[3]));
+    }
 
     Board board;
-    MaxnAi maxn = new MaxnAi();
     boolean[] thrownPlayers = new boolean[4];
-    int[] results = new int[4];
-
-    int counter = 0;
+    Client[] clients = new Client[4];
 
     public int[] startGameSimulation(){
-
-        Player p1 = new Player(1,false);
-        Player p2 = new Player(2, false);
-        Player p3 = new Player(3, false);
-        Player p4 = new Player(4, false);
-
-        Player[] players =  new Player[4];
-        players[0] = p1;
-        players[1] = p2;
-        players[2] = p3;
-        players[3] = p4;
-
-        board = new Board(players);
-        board.getPlayerAndRegister(1);
+        Move move;
+        board = new Board();
 
         while (true){
-            for(int i=1; i<5; i++){
+            for(int i=0; i<4; i++){
+                board.updateStonePositionsFrom(i+1);
 
-                if(!thrownPlayers[i - 1]){
-                    doTurn(i);
-                    System.out.println(board + "\n");
+                if(thrownPlayers[i])
+                    continue;
+
+                move = clients[i].doOwnTurn();
+
+                if (board.checkMoveIsLegal(move.x, move.y)){
+                    board.addStone(move.x, move.y, i+1);
+                    for (Client client : clients) {
+                        client.updateOnMoveReceived(move);
+                    }
                 }
-                else
-                    board.updateStonePositionsFrom(i);
+                else{
+                    thrownPlayers[i] = true;
+                }
 
-                if (board.hasAnyoneWon())
+                if(board.hasAnyoneWon())
                     break;
             }
-
-            if (board.hasAnyoneWon())
+            if(board.hasAnyoneWon())
                 break;
         }
 
-        fillResults(players);
+        return fillResults();
+    }
+
+    private int[] fillResults() {
+        int[] results = new int[4];
+        results[0] = board.getPlayerScore(1);
+        results[1] = board.getPlayerScore(2);
+        results[2] = board.getPlayerScore(3);
+        results[3] = board.getPlayerScore(4);
         return results;
-    }
-
-    private void fillResults(Player[] players) {
-        results[0] = players[0].getPoints();
-        results[1] = players[1].getPoints();
-        results[2] = players[2].getPoints();
-        results[3] = players[3].getPoints();
-    }
-
-    private void doTurn(int playerNo) {
-
-        Move move = maxn.generateMove(board, playerNo);
-        board.updateStonePositionsFrom(playerNo);
-
-        if(move == null || !board.checkMoveIsLegal(move.x, move.y)){
-            thrownPlayers[playerNo - 1] = true;
-            System.out.println("Illegal Move of Player " + playerNo + ", Move: " + move.x + ", " + move.y);
-        }
-        else {
-            board.addStone(move.x, move.y, playerNo);
-            System.out.println("Player " + playerNo + " Move: " + move.x + ", " + move.y);
-        }
-    }
-
-    private void drawPosition(int counter){
-
     }
 
 }

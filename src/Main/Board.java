@@ -8,37 +8,18 @@ public class Board {
     private List<BoardField> boardFieldList;
     private final Player[] players;
 
-    private BewertungsFunktion bewertungsFunktion;
-
     public Board(Player[] players){
         this.players = players;
-
         configureBoard();
     }
 
     public Board() {
-        System.out.println("wrong construcotr");
         players = new Player[]{
                 new Player(1, false),
                 new Player(2, false),
                 new Player(3, false),
                 new Player(4, false),
         };
-
-        configureBoard();
-    }
-
-    public Board(BewertungsFunktion bewertungsFunktion) {
-
-        System.out.println("correct construcotr");
-        this.bewertungsFunktion = bewertungsFunktion;
-        players = new Player[]{
-                new Player(1, false, bewertungsFunktion),
-                new Player(2, false, bewertungsFunktion),
-                new Player(3, false, bewertungsFunktion),
-                new Player(4, false, bewertungsFunktion),
-        };
-
         configureBoard();
     }
 
@@ -50,7 +31,6 @@ public class Board {
                 boardFields[x][y] = new BoardField(this);
             }
         }
-
         boardFieldList = ListExtension.twoDArrayToList(boardFields);
     }
 
@@ -141,7 +121,7 @@ public class Board {
         return posX >= boardFields.length || posY >= boardFields.length || posX < 0 || posY < 0;
     }
 
-    public void addMove(int x, int y) {
+    public void updateAndAddMove(int x, int y) {
         int playerNo = getPlayerFromMove(x, y);
 
         if (playerNo == -1)

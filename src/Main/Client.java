@@ -14,12 +14,14 @@ public class Client implements Runnable{
     public Client(String name, AiLogic logic){
         this.name = name;
         this.logic = logic;
+        board = new Board();
     }
 
-    public Client(String name, AiLogic logic, BewertungsFunktion bewertungsFunktion){
+    public Client(String name,int playerNo, AiLogic logic){
+        myNumber = playerNo;
         this.name = name;
         this.logic = logic;
-        this.board = new Board(bewertungsFunktion);
+        board = new Board();
     }
 
     public Client(AiLogic logic){
@@ -29,17 +31,19 @@ public class Client implements Runnable{
     public Client(int playerNo){
         myNumber = playerNo;
         logic = new SimpleBoardAi();
+        board = new Board();
     }
 
     public Client(int playerNo, AiLogic logic){
         myNumber = playerNo;
         this.logic = logic;
+        board = new Board();
     }
 
     private String name;
 
-    private Board board = new Board();
-    private AiLogic logic;
+    private Board board;
+    private final AiLogic logic;
 
     private int myNumber;
     private boolean init;
@@ -85,7 +89,7 @@ public class Client implements Runnable{
             board.updateSkippedPlayers(lastPlayer, currentPlayer);
 
         lastPlayer = currentPlayer;
-        board.addMove(move.x, move.y);
+        board.updateAndAddMove(move.x, move.y);
     }
 
     public boolean areEqual(Client client){

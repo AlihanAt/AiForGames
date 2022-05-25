@@ -1,5 +1,6 @@
 package Test;
 
+import Main.RatingFunction;
 import Main.Board;
 import Main.Logic.MaxnAi;
 import Main.Logic.MinimaxAi;
@@ -25,7 +26,7 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-";
         Assertions.assertEquals(expected, board.toString());
 
-        board.addMove(6,0);
+        board.updateAndAddMove(6,0);
         expected =
                 "-,-,-,-,-,-,-,-\n" +
                 "-,-,-,-,-,-,-,-\n" +
@@ -37,7 +38,7 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-";
         Assertions.assertEquals(expected, board.toString());
 
-        board.addMove(0,6);
+        board.updateAndAddMove(0,6);
         expected =
                 "-,-,-,-,-,-,2,-\n" +
                 "-,-,-,-,-,-,-,-\n" +
@@ -49,7 +50,7 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-";
         Assertions.assertEquals(expected, board.toString());
 
-        board.addMove(6,0);
+        board.updateAndAddMove(6,0);
         expected =
                 "-,-,-,-,-,-,2,-\n" +
                 "-,-,-,-,-,-,-,-\n" +
@@ -61,7 +62,7 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-";
         Assertions.assertEquals(expected, board.toString());
 
-        board.addMove(4,0);
+        board.updateAndAddMove(4,0);
         expected =
                 "-,-,-,-,-,-,2,-\n" +
                 "-,-,-,-,-,-,-,-\n" +
@@ -73,9 +74,9 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-";
         Assertions.assertEquals(expected, board.toString());
 
-        board.addMove(6,0);
-        board.addMove(6,0);
-        board.addMove(6,0);
+        board.updateAndAddMove(6,0);
+        board.updateAndAddMove(6,0);
+        board.updateAndAddMove(6,0);
         expected =
                 "-,-,-,-,-,-,2,-\n" +
                 "-,-,-,-,-,-,-,-\n" +
@@ -87,8 +88,8 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-";
         Assertions.assertEquals(expected, board.toString());
 
-        board.addMove(6,0);
-        board.addMove(6,0);
+        board.updateAndAddMove(6,0);
+        board.updateAndAddMove(6,0);
         expected =
                 "-,-,-,-,-,-,2,-\n" +
                 "-,-,-,-,-,-,-,-\n" +
@@ -100,7 +101,7 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-";
         Assertions.assertEquals(expected, board.toString());
 
-        board.addMove(5,0);
+        board.updateAndAddMove(5,0);
         expected =
                 "-,-,-,-,-,-,2,-\n" +
                 "-,-,-,-,-,-,-,-\n" +
@@ -112,7 +113,7 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-";
         Assertions.assertEquals(expected, board.toString());
 
-        board.addMove(7,4);
+        board.updateAndAddMove(7,4);
         expected =
                 "-,-,-,-,-,-,2,-\n" +
                 "-,-,-,-,-,-,-,-\n" +
@@ -124,7 +125,7 @@ class BoardTest {
                 "-,-,-,-,4,-,-,-";
         Assertions.assertEquals(expected, board.toString());
 
-        board.addMove(7,4);
+        board.updateAndAddMove(7,4);
         expected =
                 "-,-,-,-,-,-,2,-\n" +
                 "-,-,-,-,-,-,-,-\n" +
@@ -136,12 +137,12 @@ class BoardTest {
                 "-,-,-,-,4,-,-,-";
         Assertions.assertEquals(expected, board.toString());
 
-        board.addMove(7,4);
-        board.addMove(7,4);
-        board.addMove(7,4);
-        board.addMove(7,4);
-        board.addMove(7,4);
-        board.addMove(7,4);
+        board.updateAndAddMove(7,4);
+        board.updateAndAddMove(7,4);
+        board.updateAndAddMove(7,4);
+        board.updateAndAddMove(7,4);
+        board.updateAndAddMove(7,4);
+        board.updateAndAddMove(7,4);
         expected =
                 "-,-,-,-,4,-,2,-\n" +
                 "-,-,-,-,4,-,-,-\n" +
@@ -153,7 +154,7 @@ class BoardTest {
                 "-,-,-,-,4,-,-,-";
         Assertions.assertEquals(expected, board.toString());
 
-        board.addMove(0,5);
+        board.updateAndAddMove(0,5);
         expected =
                 "-,-,-,-,4,2,-,-\n" +
                 "-,-,-,-,4,-,2,-\n" +
@@ -182,10 +183,10 @@ class BoardTest {
     @Test
     public void testSkipping(){
         Board board = new Board();
-        board.addMove(6,0);
-        board.addMove(0,6);
-        board.addMove(6,7);
-        board.addMove(7,6);
+        board.updateAndAddMove(6,0);
+        board.updateAndAddMove(0,6);
+        board.updateAndAddMove(6,7);
+        board.updateAndAddMove(7,6);
         String expected =
                 "-,-,-,-,-,-,2,-\n" +
                 "-,-,-,-,-,-,-,-\n" +
@@ -251,11 +252,11 @@ class BoardTest {
     public void testFieldRating(){
         Board board = new Board();
         board.getPlayerAndRegister(1);
-        board.addMove(3,0);
-        board.addMove(2,0);
-        board.addMove(0,3);
-        board.addMove(2,7);
-        board.addMove(7,4);
+        board.updateAndAddMove(3,0);
+        board.updateAndAddMove(2,0);
+        board.updateAndAddMove(0,3);
+        board.updateAndAddMove(2,7);
+        board.updateAndAddMove(7,4);
         String expected =
                 "-,-,-,2,-,-,-,-\n" +
                 "-,-,-,-,-,-,-,-\n" +
@@ -439,10 +440,10 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-";
         assertEquals(expected, board.toString());
 
-        MaxnAi maxn = new MaxnAi();
+        MaxnAi maxn = new MaxnAi(new RatingFunction(10,10,10));
         Move maxnMove = maxn.generateMove(board, 1);
 
-        MinimaxAi minimax = new MinimaxAi();
+        MinimaxAi minimax = new MinimaxAi(null);
         Move minimaxMove = maxn.generateMove(board, 1);
 
         assertEquals(maxnMove.x, 3);
@@ -477,7 +478,7 @@ class BoardTest {
                 "-,-,2,-,-,-,4,3\n"+
                 "2,-,-,-,1,-,4,-";
         board = stringToBoard(expected);
-        MinimaxAi minimaxAi = new MinimaxAi();
+        MinimaxAi minimaxAi = new MinimaxAi(null);
         Move move = minimaxAi.generateMove(board, 2);
         System.out.println(move.x + ", "  + move.y);
 
@@ -495,7 +496,7 @@ class BoardTest {
                 "-,-,-,-,-,-,4,-\n"+
                 "-,-,-,-,2,1,-,-";
         board = stringToBoard(expected);
-        MaxnAi maxnAi = new MaxnAi();
+        MaxnAi maxnAi = new MaxnAi(new RatingFunction(10,10,10));
         move = maxnAi.generateMove(board, 3);
         System.out.println(move.x + ", "  + move.y);
 
