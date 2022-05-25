@@ -3,10 +3,16 @@ package Main;
 public class Player {
 
     private final int number;
-
     private int points = 0;
-
     private boolean isMe;
+
+    private BewertungsFunktion bewertung;
+
+    public Player(int number, boolean isMe, BewertungsFunktion bewertung){
+        this.number = number;
+        this.isMe = isMe;
+        this.bewertung = bewertung;
+    }
 
     public Player(int number, boolean isMe){
         this.number = number;
@@ -37,5 +43,9 @@ public class Player {
 
     public void registerSelf() {
         isMe = true;
+    }
+
+    public BewertungsFunktion getBewertung(){
+        return bewertung;
     }
 }

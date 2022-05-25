@@ -1,11 +1,13 @@
 package Main.Logic;
 
+import Main.BewertungsFunktion;
 import Main.Board;
+import com.sun.scenario.effect.impl.sw.java.JSWBlend_SRC_OUTPeer;
 import lenz.htw.gaap.Move;
 
 public class MaxnAi extends AiLogic {
 
-    final int DEPTH = 9;
+    final int DEPTH = 2;
 
     private int myNumber;
     private Move bestMove;
@@ -20,9 +22,11 @@ public class MaxnAi extends AiLogic {
     private Tupel maxn(int depth, int playerNo, Board board) {
 
         if(board.hasEnemyWon(myNumber))
-            return new Tupel(0,45,45,45);   //zu ändern
+//            return new Tupel(0,45,45,45);   //zu ändern
+            return finalScore(board);
         else if(board.hasPlayerWon(myNumber))
-            return new Tupel(45,0,0,0);
+//            return new Tupel(45,0,0,0);
+            return finalScore(board);
 
         if (depth == 0)
             return finalScore(board);
@@ -62,12 +66,31 @@ public class MaxnAi extends AiLogic {
     private Tupel finalScore(Board board) {
         Tupel score = new Tupel();
         int points;
-
+        System.out.println("evaluating");
         for(int i=0; i<4; i++){
-            points = board.getPlayerScore(i+1);
+//            points = board.getPlayerScore(i+1);
+            points = evaluateGame(board, i+1);
             score.setPointsOfPlayer(i+1, points);
         }
         return score;
+    }
+
+    private int evaluateGame(Board board, int playerNo){
+        int gameWiningMove = 40;
+        System.out.println("hier nullpointer?");
+
+        if(board.getPlayer(playerNo).getBewertung() == null){
+            System.out.println("bewertung ist null");
+        }
+
+        BewertungsFunktion bewertung = board.getPlayer(playerNo).getBewertung();
+
+
+        int evaluation = (bewertung.getOwnPointsMultiplier() * board.getPlayerScore(playerNo))
+                + (bewertung.getFieldRatingMultiplier() * board.getFieldRatingForEnemies(playerNo))
+                + (bewertung.getStonesOnLineMultiplier() * board.getFreeFieldsOnBaseline(playerNo));
+
+        return evaluation;
     }
 
     private Move getMoveFromPlayerNumber(int playerNo, int i){

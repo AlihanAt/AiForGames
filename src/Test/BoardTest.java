@@ -4,11 +4,8 @@ import Main.Board;
 import Main.Logic.MaxnAi;
 import Main.Logic.MinimaxAi;
 import lenz.htw.gaap.Move;
-import lenz.htw.gaap.b;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.awt.image.MemoryImageSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -291,7 +288,7 @@ class BoardTest {
                 "-,-,-,-,-,-,-,-";
         Assertions.assertEquals(expected, board.toString());
 
-        assertEquals(-1, board.fieldRating(1));
+        assertEquals(0, board.getFieldRatingForPlayer(1));
 
         expected =
                 "-,-,-,-,-,-,-,-\n" +
@@ -530,18 +527,48 @@ class BoardTest {
                     counterY = 0;
                 }
             }
-//            else if(chars[i] == '1'){
-//
-//            }else if(chars[i] == '2'){
-//
-//            }else if(chars[i] == '3'){
-//
-//            }else if(chars[i] == '4'){
-//
-//            }
         }
 
         return board;
+    }
+
+    @Test
+    public void baselineTest(){
+        Board board = new Board();
+        board.addStone(1,0, 3);
+        board.addStone(2,0, 3);
+        board.addStone(4,0, 1);
+        board.addStone(5,0, 2);
+
+        board.addStone(0,2, 3);
+        board.addStone(0,3, 2);
+        board.addStone(0,4, 4);
+
+        board.addStone(1,7, 1);
+        board.addStone(6,7, 2);
+
+        board.addStone(7,3, 1);
+        board.addStone(7,5, 4);
+        board.addStone(7,6, 1);
+        board.addStone(7,1, 1);
+        board.addStone(7,2, 1);
+
+        String expected =
+                "-,-,3,2,4,-,-,-\n" +
+                "3,-,-,-,-,-,-,1\n" +
+                "3,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,-\n" +
+                "1,-,-,-,-,-,-,-\n" +
+                "2,-,-,-,-,-,-,-\n" +
+                "-,-,-,-,-,-,-,2\n" +
+                "-,1,1,1,-,4,1,-";
+        assertEquals(expected, board.toString());
+        assertEquals(2, board.getFreeFieldsOnBaseline(1));
+        assertEquals(3, board.getFreeFieldsOnBaseline(2));
+        assertEquals(4, board.getFreeFieldsOnBaseline(3));
+        assertEquals(1, board.getFreeFieldsOnBaseline(4));
+
+
     }
 
 }

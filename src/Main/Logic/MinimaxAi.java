@@ -5,7 +5,7 @@ import lenz.htw.gaap.Move;
 
 public class MinimaxAi extends AiLogic {
 
-    final int DEPTH = 8;
+    final int DEPTH = 12;
 
     private int myNumber;
     private Move bestMove;
@@ -13,11 +13,11 @@ public class MinimaxAi extends AiLogic {
     @Override
     public Move generateMove(Board board, int myNumber) {
         this.myNumber = myNumber;
-        minimax(DEPTH, myNumber, board);
+        minimax(DEPTH, myNumber, board, Integer.MIN_VALUE, Integer.MAX_VALUE);
         return bestMove;
     }
 
-    private int minimax(int depth, int playerNo, Board board){
+    private int minimax(int depth, int playerNo, Board board, int alpha, int beta){
 
         if(board.hasEnemyWon(myNumber))
             return -1000;
@@ -46,18 +46,26 @@ public class MinimaxAi extends AiLogic {
                 continue;
             }
 
-            int rating = minimax(depth-1, getNextPlayer(playerNo), copy);
+            int rating = minimax(depth-1, getNextPlayer(playerNo), copy, alpha, beta);
 
             if(playerNo == myNumber){
-
-                if(rating > max || (rating == max && Math.random() > 0.5)){
-                    max = rating;
-                    if(depth==DEPTH)
-                        bestMove = move;
-                }
+                max = Math.max(max, rating);
+                if(depth==DEPTH)
+                    bestMove = move;
+                alpha = Math.max(alpha, rating);
+                if(beta <= alpha)
+                    break;
+//                if(rating > max || (rating == max && Math.random() > 0.5)){
+//                    max = rating;
+//                    if(depth==DEPTH)
+//                        bestMove = move;
+//                }
             }
             else{
-                min = Math.min(rating,min);
+                min = Math.min(rating, min);
+                beta = Math.min(beta, rating);
+                if(beta <= alpha)
+                    break;
             }
 
             copy.clearStone(move.x, move.y);

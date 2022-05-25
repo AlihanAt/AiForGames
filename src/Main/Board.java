@@ -4,15 +4,20 @@ import java.util.List;
 
 public class Board {
 
-    private final BoardField[][] boardFields;
-    private final List<BoardField> boardFieldList;
+    private BoardField[][] boardFields;
+    private List<BoardField> boardFieldList;
     private final Player[] players;
 
-    private int myNumber;
-    public int enemyPointsThisRound = 0;
-    public int myPointsThisRound = 0;
+    private BewertungsFunktion bewertungsFunktion;
+
+    public Board(Player[] players){
+        this.players = players;
+
+        configureBoard();
+    }
 
     public Board() {
+        System.out.println("wrong construcotr");
         players = new Player[]{
                 new Player(1, false),
                 new Player(2, false),
@@ -20,6 +25,24 @@ public class Board {
                 new Player(4, false),
         };
 
+        configureBoard();
+    }
+
+    public Board(BewertungsFunktion bewertungsFunktion) {
+
+        System.out.println("correct construcotr");
+        this.bewertungsFunktion = bewertungsFunktion;
+        players = new Player[]{
+                new Player(1, false, bewertungsFunktion),
+                new Player(2, false, bewertungsFunktion),
+                new Player(3, false, bewertungsFunktion),
+                new Player(4, false, bewertungsFunktion),
+        };
+
+        configureBoard();
+    }
+
+    private void configureBoard() {
         boardFields = new BoardField[8][8];
 
         for (int x = 0; x < boardFields.length; x++) {
@@ -38,13 +61,24 @@ public class Board {
     }
 
     public Player getPlayerAndRegister(int playerNo) {
-        myNumber = playerNo;
         players[playerNo - 1].registerSelf();
         return players[playerNo - 1];
     }
 
     public boolean addStone(int x, int y, int playerNo) {
         return boardFields[x][y].createStone(players[playerNo - 1]);
+    }
+
+    public boolean checkMoveIsLegal(int x, int y){
+        if(boardFields[x][y].isFieldInUse()){
+            return false;
+        }
+        else if((x==0 && y==0) || (x==7 && y==0) || (x==0 && y==7) || (x==7 && y==7))
+            return false;
+        else if(x>7 || x<0 || y>7 || y<0)
+            return false;
+
+        return true;
     }
 
     public void clearStone(int x, int y) {
@@ -61,7 +95,6 @@ public class Board {
                 if (boardFields[x][y].isStoneFromPlayer(playerNo) && !boardFields[x][y].hasStoneBeenPushed()) {
                     pushStone(x, y, pushDirX, pushDirY, playerNo);
                 }
-
             }
         }
 
@@ -102,11 +135,6 @@ public class Board {
         for (BoardField field : boardFieldList) {
             field.clearPushState();
         }
-    }
-
-    private void clearPointsThisRound() {
-        myPointsThisRound = 0;
-        enemyPointsThisRound = 0;
     }
 
     private boolean isWithinBounds(int posX, int posY) {
@@ -154,33 +182,6 @@ public class Board {
             return 4;
         else
             return mod;
-    }
-
-    public int getMyNumber() {
-        return myNumber;
-    }
-
-    public int fieldRating(int playerNo){
-
-        int tempPlayerNo;
-        if(playerNo == 4)
-            tempPlayerNo = 1;
-        else
-            tempPlayerNo = playerNo+1;
-
-        while (playerNo != tempPlayerNo){
-            updateStonePositionsFrom(tempPlayerNo);
-            tempPlayerNo++;
-
-            if(tempPlayerNo == 5)
-                tempPlayerNo = 1;
-        }
-
-        updateStonePositionsFrom(playerNo);
-
-        int rating = enemyPointsThisRound-myPointsThisRound;
-        clearPointsThisRound();
-        return rating;
     }
 
     public Board deepCopy() {
@@ -246,6 +247,17 @@ public class Board {
         return enemyPoints;
     }
 
+    public boolean hasAnyoneWon(){
+        int i = 1;
+        while (i<5){
+            if(getPlayerScore(i) >= 44)
+                return true;
+            i++;
+        }
+
+        return false;
+    }
+
     public boolean hasPlayerWon(int playerNo){
         return getPlayerScore(playerNo) >= 44;
     }
@@ -269,6 +281,7 @@ public class Board {
         return false;
     }
 
+
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
@@ -287,5 +300,29 @@ public class Board {
         return str.toString();
     }
 
+    public int getFreeFieldsOnBaseline(int playerNo) {
+        int count = 0;
 
+        for(int i=1; i<7; i++){
+            if(playerNo == 1){
+                if(!boardFields[i][0].isFieldInUse())
+                    count += 1;
+            }
+            else if(playerNo == 2){
+                if(!boardFields[0][i].isFieldInUse())
+                    count += 1;
+            }
+            else if(playerNo == 3){
+                if(!boardFields[i][7].isFieldInUse())
+                    count += 1;
+            }
+            else if(playerNo == 4){
+                if(!boardFields[7][i].isFieldInUse())
+                    count += 1;
+            }
+        }
+
+        return count;
+    }
 }
+

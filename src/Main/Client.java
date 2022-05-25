@@ -16,6 +16,12 @@ public class Client implements Runnable{
         this.logic = logic;
     }
 
+    public Client(String name, AiLogic logic, BewertungsFunktion bewertungsFunktion){
+        this.name = name;
+        this.logic = logic;
+        this.board = new Board(bewertungsFunktion);
+    }
+
     public Client(AiLogic logic){
         this.logic = logic;
     }
@@ -32,7 +38,7 @@ public class Client implements Runnable{
 
     private String name;
 
-    private final Board board = new Board();
+    private Board board = new Board();
     private AiLogic logic;
 
     private int myNumber;
@@ -58,8 +64,8 @@ public class Client implements Runnable{
             }
         }catch (Exception e){
             System.out.println(e);
-            System.out.println(board.toString());
-            System.out.println("Scoreboard for PlayerNo " + myNumber + ": " + board.getPlayerScore(1) + ", " + board.getPlayerScore(2) + ", " + board.getPlayerScore(3) + ", " + board.getPlayerScore(4) +"\n");
+//            System.out.println(board + "\n");
+//            System.out.println("Scoreboard for PlayerNo " + myNumber + ": " + board.getPlayerScore(1) + ", " + board.getPlayerScore(2) + ", " + board.getPlayerScore(3) + ", " + board.getPlayerScore(4) +"\n");
         }
     }
 
