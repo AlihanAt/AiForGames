@@ -1,20 +1,18 @@
 package Main.Logic;
 
-import Main.RatingFunction;
 import Main.Board;
+import Main.Logic.Rating.RatingFunction;
 import lenz.htw.gaap.Move;
 
 public abstract class AiLogic {
+    protected RatingFunction ratingFunction;
 
-    protected RatingFunction bewertungsFunktion;
-
-    public abstract Move generateMove(Board board, int myNumber);
-
-    public AiLogic(){}
-
-    protected AiLogic(RatingFunction bewertungsFunktion){
-        this.bewertungsFunktion = bewertungsFunktion;
+    public AiLogic() {
     }
 
-}
+    protected AiLogic(RatingFunction ratingFunction) {
+        this.ratingFunction = ratingFunction;
+    }
 
+    public abstract Move generateMove(Board board, int myNumber);
+}

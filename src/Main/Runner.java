@@ -2,6 +2,7 @@ package Main;
 
 import Main.Logic.MaxnAi;
 import Main.Logic.MinimaxAi;
+import Main.Logic.Rating.AdvancedGameStateRatingFunction;
 import lenz.htw.gaap.Server;
 
 public class Runner {
@@ -11,10 +12,10 @@ public class Runner {
 //        TestThread testThread = new TestThread();
 //        testThread.start();
 
-        Client c1 = new Client("Alsi", new MinimaxAi(null));
-        Client c2 = new Client("Oli", new MinimaxAi(null));
-        Client c3 = new Client("Dennoos", new MaxnAi(new RatingFunction(10,10,10)));
-        Client c4 = new Client("jann", new MaxnAi(new RatingFunction(10,5,10)));
+        Client c1 = new Client("c1", new MinimaxAi(null));
+        Client c2 = new Client("c2", new MinimaxAi(null));
+        Client c3 = new Client("c3", new MaxnAi(new AdvancedGameStateRatingFunction(10, 10, 10)));
+        Client c4 = new Client("c4", new MaxnAi(new AdvancedGameStateRatingFunction(10, 5, 10)));
 
         Thread t1 = new Thread(c1);
         t1.start();
@@ -27,8 +28,9 @@ public class Runner {
     }
 
 }
-class TestThread extends Thread{
-        public void run(){
-            Server.runOnceAndReturnTheWinner(5);
-        }
+
+class TestThread extends Thread {
+    public void run() {
+        Server.runOnceAndReturnTheWinner(5);
+    }
 }

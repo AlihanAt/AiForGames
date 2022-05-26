@@ -1,16 +1,16 @@
 package Main;
 
 public class BoardField {
-    private Stone stone;
     private final Board board;
+    private Stone stone;
 
-    public BoardField(Board board){
+    public BoardField(Board board) {
         this.board = board;
     }
 
-    public BoardField deepCopy(Board board){
-        BoardField b =  new BoardField(board);
-        if(this.stone != null)
+    public BoardField deepCopy(Board board) {
+        BoardField b = new BoardField(board);
+        if (this.stone != null)
             b.stone = this.stone.deepCopy();
         else
             b.stone = null;
@@ -26,8 +26,8 @@ public class BoardField {
         this.stone = stone;
     }
 
-    public boolean createStone(Player player){
-        if(stone == null){
+    public boolean createStone(Player player) {
+        if (stone == null) {
             stone = new Stone(player.getNumber());
             return true;
         }
@@ -46,7 +46,7 @@ public class BoardField {
         return stone != null && stone.getPlayerNo() == playerNo;
     }
 
-    public void pushStone(BoardField next){
+    public void pushStone(BoardField next) {
         next.setStone(this.getStone());
         next.getStone().push();
         this.clearField();
@@ -57,7 +57,7 @@ public class BoardField {
     }
 
     public void clearPushState() {
-        if(stone != null)
+        if (stone != null)
             stone.resetPush();
     }
 
@@ -66,7 +66,7 @@ public class BoardField {
     }
 
     public void addPoint() {
-        if(this.getStone().playerNo == 0)
+        if (this.getStone().playerNo == 0)
             return;
 
         board.getPlayer(this.getStone().getPlayerNo()).addPoints(1);
@@ -74,13 +74,12 @@ public class BoardField {
 
     @Override
     public String toString() {
-        if(stone == null || stone.getPlayerNo() == 0)
+        if (stone == null || stone.getPlayerNo() == 0)
             return "-";
 
         return "" + stone.getPlayerNo();
     }
 
-    //TODO static vllt weg, mal schauen
     private static final class Stone {
         private final int playerNo;
         private boolean wasPushed;

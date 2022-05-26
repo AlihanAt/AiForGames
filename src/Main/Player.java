@@ -6,18 +6,18 @@ public class Player {
     private int points = 0;
     private boolean isMe;
 
-    public Player(int number, boolean isMe){
+    public Player(int number, boolean isMe) {
         this.number = number;
         this.isMe = isMe;
     }
 
-    public Player deepCopy(){
+    public Player deepCopy() {
         Player p = new Player(this.number, this.isMe);
         p.points = this.points;
         return p;
     }
 
-    public void addPoints(int count){
+    public void addPoints(int count) {
         this.points += count;
     }
 

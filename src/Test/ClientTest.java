@@ -25,18 +25,18 @@ class ClientTest {
     }
 
     @Test
-    public void testClient(){
+    public void testClient() {
 
-        for (int i=1; i<=12; i++){
-            doTurn(i%4);
+        for (int i = 1; i <= 12; i++) {
+            doTurn(i % 4);
             Assertions.assertEquals(c1.getBoard().toString(), c2.getBoard().toString());
             Assertions.assertTrue(c1.areEqual(c2));
         }
     }
 
-    private void doTurn(int playerNo){
+    private void doTurn(int playerNo) {
         Move move;
-        switch (playerNo){
+        switch (playerNo) {
             case 1:
                 move = c1.doOwnTurn();
                 break;

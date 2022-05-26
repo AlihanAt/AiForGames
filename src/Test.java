@@ -1,10 +1,8 @@
-import com.sun.java.swing.plaf.windows.WindowsDesktopIconUI;
 import lenz.htw.gaap.Move;
-import lenz.htw.gaap.Server;
 import lenz.htw.gaap.net.NetworkClient;
 
 import javax.imageio.ImageIO;
-import  java.io.File;
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -15,15 +13,15 @@ public class Test {
         List<Integer> playersList = Arrays.asList(1, 2, 3, 4);
 
         int index = playersList.indexOf(1);
-        if(index == 0){
+        if (index == 0) {
             index = playersList.size();
         }
-            System.out.println(playersList.get(index-1));
+        System.out.println(playersList.get(index - 1));
 
     }
 
     private static void rotate() {
-        int[][] matrix = {{1,2,3,3},{4,5,6,6},{7,8,9,9},{0,0,0,0}};
+        int[][] matrix = {{1, 2, 3, 3}, {4, 5, 6, 6}, {7, 8, 9, 9}, {0, 0, 0, 0}};
 
         int m = matrix.length;
         int n = matrix[0].length;
@@ -34,7 +32,7 @@ public class Test {
             for (int j = 0; j < n; j++) {
                 System.out.print(matrix[i][j]);
             }
-            System.out.println("");
+            System.out.println();
         }
 
         int temp;
@@ -57,7 +55,7 @@ public class Test {
             for (int j = 0; j < n; j++) {
                 System.out.print(matrix[i][j]);
             }
-            System.out.println("");
+            System.out.println();
         }
     }
 
@@ -77,7 +75,7 @@ public class Test {
         //Endlosschleife bis Spiel durch Exception endet (elegantes Softwaredesign?)
 //        for(;;)
         Move move;
-        while ((move=client.receiveMove()) !=null) {
+        while ((move = client.receiveMove()) != null) {
             //zug von gegenspielerInnen erhalten
             //schieben durchführen?
             //punkte?

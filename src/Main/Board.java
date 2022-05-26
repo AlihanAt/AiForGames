@@ -4,11 +4,11 @@ import java.util.List;
 
 public class Board {
 
+    private final Player[] players;
     private BoardField[][] boardFields;
     private List<BoardField> boardFieldList;
-    private final Player[] players;
 
-    public Board(Player[] players){
+    public Board(Player[] players) {
         this.players = players;
         configureBoard();
     }
@@ -23,6 +23,12 @@ public class Board {
         configureBoard();
     }
 
+    private Board(Player[] playersToClone, BoardField[][] boardToClone) {
+        players = getPlayersDeepCopy(playersToClone);
+        boardFields = getBoardFieldDeepCopy(boardToClone);
+        boardFieldList = ListExtension.twoDArrayToList(boardFields);
+    }
+
     private void configureBoard() {
         boardFields = new BoardField[8][8];
 
@@ -31,12 +37,6 @@ public class Board {
                 boardFields[x][y] = new BoardField(this);
             }
         }
-        boardFieldList = ListExtension.twoDArrayToList(boardFields);
-    }
-
-    private Board(Player[] playersToClone, BoardField[][] boardToClone) {
-        players = getPlayersDeepCopy(playersToClone);
-        boardFields = getBoardFieldDeepCopy(boardToClone);
         boardFieldList = ListExtension.twoDArrayToList(boardFields);
     }
 
@@ -49,16 +49,12 @@ public class Board {
         return boardFields[x][y].createStone(players[playerNo - 1]);
     }
 
-    public boolean checkMoveIsLegal(int x, int y){
-        if(boardFields[x][y].isFieldInUse()){
+    public boolean checkMoveIsLegal(int x, int y) {
+        if (boardFields[x][y].isFieldInUse()) {
             return false;
-        }
-        else if((x==0 && y==0) || (x==7 && y==0) || (x==0 && y==7) || (x==7 && y==7))
+        } else if ((x == 0 && y == 0) || (x == 7 && y == 0) || (x == 0 && y == 7) || (x == 7 && y == 7))
             return false;
-        else if(x>7 || x<0 || y>7 || y<0)
-            return false;
-
-        return true;
+        else return x <= 7 && x >= 0 && y <= 7 && y >= 0;
     }
 
     public void clearStone(int x, int y) {
@@ -170,8 +166,8 @@ public class Board {
 
     private BoardField[][] getBoardFieldDeepCopy(BoardField[][] boardToClone) {
         BoardField[][] boardField = new BoardField[boardToClone.length][boardToClone.length];
-        for (int i=0; i<boardField.length; i++){
-            for (int j=0; j<boardField.length; j++){
+        for (int i = 0; i < boardField.length; i++) {
+            for (int j = 0; j < boardField.length; j++) {
                 boardField[i][j] = boardToClone[i][j].deepCopy(this);
             }
         }
@@ -192,10 +188,10 @@ public class Board {
     }
 
     public Player getPlayer(int playerNo) {
-        return players[playerNo-1];
+        return players[playerNo - 1];
     }
 
-    public int getPlayerScore(int playerNo){
+    public int getPlayerScore(int playerNo) {
         return getPlayer(playerNo).getPoints();
     }
 
@@ -204,16 +200,16 @@ public class Board {
         return getPlayerScore(playerNo) - enemyPoints;
     }
 
-    public int getFieldRatingForEnemies(int playerNo){
+    public int getFieldRatingForEnemies(int playerNo) {
         return getEnemyPoints(playerNo) - getPlayerScore(playerNo);
     }
 
     private int getEnemyPoints(int playerNo) {
         int tempPlayerNo;
-        if(playerNo == 4)
+        if (playerNo == 4)
             tempPlayerNo = 1;
         else
-            tempPlayerNo = playerNo +1;
+            tempPlayerNo = playerNo + 1;
 
         int enemyPoints = 0;
 
@@ -221,16 +217,16 @@ public class Board {
             enemyPoints = getPlayerScore(tempPlayerNo);
             tempPlayerNo++;
 
-            if(tempPlayerNo == 5)
+            if (tempPlayerNo == 5)
                 tempPlayerNo = 1;
         }
         return enemyPoints;
     }
 
-    public boolean hasAnyoneWon(){
+    public boolean hasAnyoneWon() {
         int i = 1;
-        while (i<5){
-            if(getPlayerScore(i) >= 44)
+        while (i < 5) {
+            if (getPlayerScore(i) >= 44)
                 return true;
             i++;
         }
@@ -238,24 +234,32 @@ public class Board {
         return false;
     }
 
-    public boolean hasPlayerWon(int playerNo){
+    public boolean hasStonesLeft() {
+        for (BoardField boardField :
+                boardFieldList) {
+            if (boardField.isFieldInUse()) return true;
+        }
+        return false;
+    }
+
+    public boolean hasPlayerWon(int playerNo) {
         return getPlayerScore(playerNo) >= 44;
     }
 
-    public boolean hasEnemyWon(int playerNo){
+    public boolean hasEnemyWon(int playerNo) {
         int tempPlayerNo;
-        if(playerNo == 4)
+        if (playerNo == 4)
             tempPlayerNo = 1;
         else
-            tempPlayerNo = playerNo +1;
+            tempPlayerNo = playerNo + 1;
 
         while (playerNo != tempPlayerNo) {
 
-            if(getPlayerScore(tempPlayerNo) >= 44)
+            if (getPlayerScore(tempPlayerNo) >= 44)
                 return true;
 
             tempPlayerNo++;
-            if(tempPlayerNo == 5)
+            if (tempPlayerNo == 5)
                 tempPlayerNo = 1;
         }
         return false;
@@ -283,21 +287,18 @@ public class Board {
     public int getFreeFieldsOnBaseline(int playerNo) {
         int count = 0;
 
-        for(int i=1; i<7; i++){
-            if(playerNo == 1){
-                if(!boardFields[i][0].isFieldInUse())
+        for (int i = 1; i < 7; i++) {
+            if (playerNo == 1) {
+                if (!boardFields[i][0].isFieldInUse())
                     count += 1;
-            }
-            else if(playerNo == 2){
-                if(!boardFields[0][i].isFieldInUse())
+            } else if (playerNo == 2) {
+                if (!boardFields[0][i].isFieldInUse())
                     count += 1;
-            }
-            else if(playerNo == 3){
-                if(!boardFields[i][7].isFieldInUse())
+            } else if (playerNo == 3) {
+                if (!boardFields[i][7].isFieldInUse())
                     count += 1;
-            }
-            else if(playerNo == 4){
-                if(!boardFields[7][i].isFieldInUse())
+            } else if (playerNo == 4) {
+                if (!boardFields[7][i].isFieldInUse())
                     count += 1;
             }
         }
