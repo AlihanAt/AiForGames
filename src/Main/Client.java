@@ -1,7 +1,6 @@
 package Main;
 
 import Main.Logic.AiLogic;
-import Main.Logic.SimpleBoardAi;
 import lenz.htw.gaap.Move;
 import lenz.htw.gaap.net.NetworkClient;
 
@@ -12,8 +11,8 @@ import java.io.IOException;
 public class Client implements Runnable {
 
     private final AiLogic logic;
-    private String name;
-    private Board board;
+    private final String name;
+    private final Board board;
     private int myNumber;
     private boolean init;
     private int lastPlayer = 0;
@@ -23,23 +22,10 @@ public class Client implements Runnable {
         this.logic = logic;
         board = new Board();
     }
+
     public Client(String name, int playerNo, AiLogic logic) {
         myNumber = playerNo;
         this.name = name;
-        this.logic = logic;
-        board = new Board();
-    }
-
-    public Client(AiLogic logic) {
-        this.logic = logic;
-    }
-    public Client(int playerNo) {
-        myNumber = playerNo;
-        logic = new SimpleBoardAi();
-        board = new Board();
-    }
-    public Client(int playerNo, AiLogic logic) {
-        myNumber = playerNo;
         this.logic = logic;
         board = new Board();
     }
@@ -48,7 +34,7 @@ public class Client implements Runnable {
         NetworkClient client = new NetworkClient("localhost", name, ImageIO.read(new File("mc.png")));
 
         myNumber = client.getMyPlayerNumber() + 1;
-        Player myself = board.getPlayerAndRegister(myNumber);
+        board.getPlayerAndRegister(myNumber);
         System.out.println("MyNumber " + myNumber);
         Move move;
 
@@ -62,8 +48,6 @@ public class Client implements Runnable {
             }
         } catch (Exception e) {
             System.out.println(e);
-//            System.out.println(board + "\n");
-//            System.out.println("Scoreboard for PlayerNo " + myNumber + ": " + board.getPlayerScore(1) + ", " + board.getPlayerScore(2) + ", " + board.getPlayerScore(3) + ", " + board.getPlayerScore(4) +"\n");
         }
     }
 
@@ -86,12 +70,12 @@ public class Client implements Runnable {
         board.updateAndAddMove(move.x, move.y);
     }
 
-    public boolean areEqual(Client client) {
-        return board.toString().equals(client.board.toString());
-    }
-
     public Board getBoard() {
         return board;
+    }
+
+    public void setMyNumber(int number){
+        myNumber = number;
     }
 
     @Override

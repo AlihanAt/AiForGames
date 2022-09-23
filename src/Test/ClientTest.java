@@ -18,10 +18,10 @@ class ClientTest {
 
     @BeforeEach
     void setUp() {
-        c1 = new Client(1, new AdvancedAi());
-        c2 = new Client(2, new RandomAiLogic());
-        c3 = new Client(3, new SimpleBoardAi());
-        c4 = new Client(4, new RandomAiLogic());
+        c1 = new Client("c1", 1, new AdvancedAi());
+        c2 = new Client("c2", 2, new RandomAiLogic());
+        c3 = new Client("c3", 3, new SimpleBoardAi());
+        c4 = new Client("c4", 4, new RandomAiLogic());
     }
 
     @Test
@@ -30,7 +30,7 @@ class ClientTest {
         for (int i = 1; i <= 12; i++) {
             doTurn(i % 4);
             Assertions.assertEquals(c1.getBoard().toString(), c2.getBoard().toString());
-            Assertions.assertTrue(c1.areEqual(c2));
+            Assertions.assertTrue(areEqual(c1, c2));
         }
     }
 
@@ -55,5 +55,9 @@ class ClientTest {
         c2.updateOnMoveReceived(move);
         c3.updateOnMoveReceived(move);
         c4.updateOnMoveReceived(move);
+    }
+
+    public boolean areEqual(Client c1, Client c2) {
+        return c1.getBoard().toString().equals(c2.getBoard().toString());
     }
 }

@@ -249,62 +249,6 @@ class BoardTest {
     }
 
     @Test
-    public void testFieldRating() {
-        Board board = new Board();
-        board.getPlayerAndRegister(1);
-        board.updateAndAddMove(3, 0);
-        board.updateAndAddMove(2, 0);
-        board.updateAndAddMove(0, 3);
-        board.updateAndAddMove(2, 7);
-        board.updateAndAddMove(7, 4);
-        String expected =
-                "-,-,-,2,-,-,-,-\n" +
-                        "-,-,-,-,-,-,-,-\n" +
-                        "1,-,-,-,-,-,-,3\n" +
-                        "-,1,-,-,-,-,-,-\n" +
-                        "-,-,-,-,-,-,-,-\n" +
-                        "-,-,-,-,-,-,-,-\n" +
-                        "-,-,-,-,-,-,-,-\n" +
-                        "-,-,-,-,4,-,-,-";
-        assertEquals(expected, board.toString());
-
-        board.updateStonePositionsFrom(1);
-        board.updateStonePositionsFrom(1);
-        board.updateStonePositionsFrom(2);
-        board.updateStonePositionsFrom(2);
-        board.updateStonePositionsFrom(3);
-        board.updateStonePositionsFrom(3);
-        board.updateStonePositionsFrom(3);
-        board.updateStonePositionsFrom(4);
-        board.updateStonePositionsFrom(4);
-
-        expected =
-                "-,-,-,-,-,-,-,-\n" +
-                        "-,-,-,-,-,-,-,-\n" +
-                        "-,-,1,2,3,-,-,-\n" +
-                        "-,-,-,1,-,-,-,-\n" +
-                        "-,-,-,-,-,-,-,-\n" +
-                        "-,-,-,-,4,-,-,-\n" +
-                        "-,-,-,-,-,-,-,-\n" +
-                        "-,-,-,-,-,-,-,-";
-        Assertions.assertEquals(expected, board.toString());
-
-        assertEquals(0, board.getFieldRatingForPlayer(1));
-
-        expected =
-                "-,-,-,-,-,-,-,-\n" +
-                        "-,-,-,-,-,-,-,-\n" +
-                        "-,-,-,1,3,-,-,-\n" +
-                        "-,-,-,2,-,-,-,-\n" +
-                        "-,-,-,-,1,4,-,-\n" +
-                        "-,-,-,-,-,-,-,-\n" +
-                        "-,-,-,-,-,-,-,-\n" +
-                        "-,-,-,-,-,-,-,-";
-        Assertions.assertEquals(expected, board.toString());
-
-    }
-
-    @Test
     public void testPoints() {
         Board board = new Board();
         board.getPlayerAndRegister(1);
@@ -478,7 +422,7 @@ class BoardTest {
                         "-,-,2,-,-,-,4,3\n" +
                         "2,-,-,-,1,-,4,-";
         board = stringToBoard(expected);
-        MinimaxAi minimaxAi = new MinimaxAi(null);
+        MinimaxAi minimaxAi = new MinimaxAi(new AdvancedGameStateRatingFunction(5,1,3));
         Move move = minimaxAi.generateMove(board, 2);
         System.out.println(move.x + ", " + move.y);
 
