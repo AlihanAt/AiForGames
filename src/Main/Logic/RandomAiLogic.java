@@ -11,17 +11,26 @@ public class RandomAiLogic extends AiLogic {
 
     @Override
     public Move generateMove(Board board, int myself) {
-        int value = rand.nextInt(5) + 1;
+        boolean legalMove = false;
+        Move move = new Move(0,0);
 
-        if (myself == 1) {
-            return new Move(value, 0);
-        } else if (myself == 2) {
-            return new Move(0, value);
-        } else if (myself == 3) {
-            return new Move(value, 7);
-        } else if (myself == 4) {
-            return new Move(7, value);
+        while(!legalMove) {
+            int value = rand.nextInt(5) + 1;
+
+            if (myself == 1) {
+                move = new Move(value, 0);
+            } else if (myself == 2) {
+                move = new Move(0, value);
+            } else if (myself == 3) {
+                move = new Move(value, 7);
+            } else if (myself == 4) {
+                move = new Move(7, value);
+            }
+
+            if(board.checkMoveIsLegal(move.x, move.y)){
+                legalMove = true;
+            }
         }
-        return null;
+        return move;
     }
 }

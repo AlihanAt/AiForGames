@@ -5,7 +5,7 @@ import Main.Logic.Rating.RatingFunction;
 import lenz.htw.gaap.Move;
 
 public class MaxnAi extends AiLogic {
-    private final int DEPTH = 2;
+    private final int DEPTH = 8;
     private int myNumber;
     private Move bestMove;
 
@@ -59,7 +59,6 @@ public class MaxnAi extends AiLogic {
         Tuple score = new Tuple();
         float points;
         for (int i = 0; i < 4; i++) {
-//            points = board.getPlayerScore(i+1);
             points = ratingFunction.evaluateGame(board, i + 1);
             score.setPointsOfPlayer(i + 1, points);
         }

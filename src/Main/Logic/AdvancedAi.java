@@ -8,8 +8,6 @@ public class AdvancedAi extends AiLogic {
     @Override
     public Move generateMove(Board board, int myNumber) {
 
-        System.out.println("board = " + board + ", myNumber = " + myNumber);
-
         Board clone = board.deepCopy();
         clone.updateStonePositionsFrom(myNumber);
 
