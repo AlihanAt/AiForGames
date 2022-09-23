@@ -15,10 +15,10 @@ public class Board {
 
     public Board() {
         players = new Player[]{
-                new Player(1, false),
-                new Player(2, false),
-                new Player(3, false),
-                new Player(4, false),
+                new Player(1),
+                new Player(2),
+                new Player(3),
+                new Player(4),
         };
         configureBoard();
     }
@@ -40,9 +40,8 @@ public class Board {
         boardFieldList = ListExtension.twoDArrayToList(boardFields);
     }
 
-    public Player getPlayerAndRegister(int playerNo) {
+    public void getPlayerAndRegister(int playerNo) {
         players[playerNo - 1].registerSelf();
-        return players[playerNo - 1];
     }
 
     public boolean addStone(int x, int y, int playerNo) {
@@ -235,8 +234,7 @@ public class Board {
     }
 
     public boolean hasStonesLeft() {
-        for (BoardField boardField :
-                boardFieldList) {
+        for (BoardField boardField : boardFieldList) {
             if (boardField.isFieldInUse()) return true;
         }
         return false;
@@ -265,25 +263,6 @@ public class Board {
         return false;
     }
 
-
-    @Override
-    public String toString() {
-        StringBuilder str = new StringBuilder();
-
-        for (int x = 0; x < boardFields.length; x++) {
-            for (int y = 0; y < boardFields[x].length; y++) {
-
-                str.append(boardFields[x][y]);
-                if (y + 1 != boardFields[x].length)
-                    str.append(",");
-            }
-            if (x + 1 != boardFields.length)
-                str.append("\n");
-        }
-
-        return str.toString();
-    }
-
     public int getFreeFieldsOnBaseline(int playerNo) {
         int count = 0;
 
@@ -304,6 +283,24 @@ public class Board {
         }
 
         return count;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+
+        for (int x = 0; x < boardFields.length; x++) {
+            for (int y = 0; y < boardFields[x].length; y++) {
+
+                str.append(boardFields[x][y]);
+                if (y + 1 != boardFields[x].length)
+                    str.append(",");
+            }
+            if (x + 1 != boardFields.length)
+                str.append("\n");
+        }
+
+        return str.toString();
     }
 }
 

@@ -6,6 +6,11 @@ public class Player {
     private int points = 0;
     private boolean isMe;
 
+    public Player (int number){
+        this.number = number;
+        this.isMe = false;
+    }
+
     public Player(int number, boolean isMe) {
         this.number = number;
         this.isMe = isMe;
