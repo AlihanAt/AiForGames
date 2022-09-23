@@ -9,15 +9,17 @@ import java.util.Random;
 
 public class AutoTrainer {
 
+    final int TRAINING_ITERATIONS = 10;
     final int RUN_ITERATIONS = 1;
-    final int TRAINING_ITERATIONS = 20;
+    final static int AMOUNT = 80;
+
     List<int[]> results = new ArrayList<>();
     RatingFunction[] ratingFunctions;
     RatingFunction[] evaluatedFunctions;
 
     public static void main(String[] args) {
         AutoTrainer trainer = new AutoTrainer();
-        trainer.startTraining(160);
+        trainer.startTraining(AMOUNT);
     }
 
     public void startTraining(int amount) {
@@ -81,7 +83,6 @@ public class AutoTrainer {
             randomRatings[i] = new AdvancedGameStateRatingFunction(random.nextFloat() * mod1,
                     random.nextFloat() + mod2,
                     random.nextFloat() * mod3);
-            //TODO use reflection to grab a new instance of the child through the abstract class
         }
         return randomRatings;
     }
