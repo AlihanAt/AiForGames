@@ -9,6 +9,9 @@ public class GameMock {
     Board board;
     boolean[] thrownPlayers = new boolean[4];
     Client[] clients = new Client[4];
+
+    public GameMock(){}
+
     public GameMock(RatingFunction ratingFunction, RatingFunction ratingFunction1, RatingFunction ratingFunction2, RatingFunction ratingFunction3) {
         clients[0] = new Client("c1", 1, new MaxnAi(ratingFunction));
         clients[1] = new Client("c2", 2, new MaxnAi(ratingFunction1));
@@ -67,6 +70,14 @@ public class GameMock {
         results[2] = board.getPlayerScore(3);
         results[3] = board.getPlayerScore(4);
         return results;
+    }
+
+    public void setUpClients(Client[] clientsRandom){
+
+        clients[0] = clientsRandom[0];
+        clients[1] = clientsRandom[1];
+        clients[2] = clientsRandom[2];
+        clients[3] = clientsRandom[3];
     }
 
 }
